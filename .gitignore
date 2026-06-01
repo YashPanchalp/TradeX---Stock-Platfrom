@@ -1,0 +1,17 @@
+# Ignore Node modules for all subprojects
+node_modules/
+# Explicit project-level ignores (optional)
+dashboard/node_modules/
+frontend/node_modules/
+
+# Ignore build artifacts
+/dist
+/build
+
+# OS files
+.DS_Store
+
+# Logs
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
