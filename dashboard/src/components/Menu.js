@@ -1,10 +1,22 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 
 import { Link } from "react-router-dom";
 
 const Menu = () => {
   const [selectedMenu, setSelectedMenu] = useState(0);
   const [isProfileDropdownOpen, setIsProfileDropdownOpen] = useState(false);
+  // THEME-TOGGLE-STATE-START (copilot-marker)
+  const [isDarkTheme, setIsDarkTheme] = useState(() => {
+    const saved = localStorage.getItem("tradex-theme");
+    return saved ? saved === "dark" : false;
+  });
+
+  useEffect(() => {
+    const themeName = isDarkTheme ? "dark" : "light";
+    document.body.dataset.theme = themeName;
+    localStorage.setItem("tradex-theme", themeName);
+  }, [isDarkTheme]);
+  // THEME-TOGGLE-STATE-END (copilot-marker)
 
   const handleMenuClick = (index) => {
     setSelectedMenu(index);
@@ -94,6 +106,17 @@ const Menu = () => {
           <div className="avatar">ZU</div>
           <p className="username">USERID</p>
         </div>
+        {/* THEME-TOGGLE-START (copilot-marker) */}
+        <button
+          type="button"
+          className="theme-toggle-btn"
+          onClick={() => setIsDarkTheme((c) => !c)}
+          aria-label="Toggle dark mode"
+        >
+          <i className={`fa ${isDarkTheme ? 'fa-sun-o' : 'fa-moon-o'}`}></i>
+          <span>{isDarkTheme ? 'Light' : 'Dark'}</span>
+        </button>
+        {/* THEME-TOGGLE-END (copilot-marker) */}
       </div>
     </div>
   );

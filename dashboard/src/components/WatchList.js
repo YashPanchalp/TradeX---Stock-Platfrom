@@ -70,6 +70,8 @@ const WatchList = () => {
   // ],
   // };
 
+//  Main components that have the heading , watchlists and charts
+  
   return (
     <div className="watchlist-container">
       <div className="search-container">
@@ -95,6 +97,10 @@ const WatchList = () => {
 };
 
 export default WatchList;
+
+//----------------------------
+// NEW COMPONENT WatchListItem
+//--------------------------
 
 const WatchListItem = ({ stock }) => {
   const [showWatchlistActions, setShowWatchlistActions] = useState(false);
@@ -125,6 +131,9 @@ const WatchListItem = ({ stock }) => {
     </li>
   );
 };
+//----------------------------
+// NEW COMPONENT WatchListActions
+//--------------------------
 
 const WatchListActions = ({ uid }) => {
   const generalContext = useContext(GeneralContext);
