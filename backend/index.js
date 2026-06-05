@@ -2,6 +2,7 @@ require("dotenv").config();
 const express = require("express");
 const { HoldingsModel } = require("./model/HoldingsModel");
 const { PositionsModel } = require("./model/PositionsModel");
+const { OrdersModel } = require("./model/OrdersModel");
 const app = express();
 const mongoose = require("mongoose");
 const bodyParser = require('body-parser');
@@ -189,6 +190,19 @@ app.get('/allPositions', async(req,res)=> {
   let allPositions = await PositionsModel.find({});
   res.json(allPositions);
 })
+
+//API ENDPOINT FOR THE PLACE NEW ORDER
+app.post('/newOrder', async (req,res) => {
+  let newOrder = new OrdersModel({
+    name : req.body.name,
+    qty : req.body.qty,
+    price : req.body.price,
+    mode : req.body.mode,
+  });
+  newOrder.save();
+  res.send("Orders saved");
+});
+
 
 app.get("/", (req, res) => {
   res.send("Home route");
