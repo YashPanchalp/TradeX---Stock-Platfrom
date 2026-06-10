@@ -261,7 +261,7 @@ code {
   align-items: center;
   justify-content: space-between;
   gap: 1rem;
-  overflow-x: auto;
+  overflow: visible;
 }
 
 .logo {
@@ -937,8 +937,7 @@ body[data-theme='dark'] {
   flex: 1;
   padding: 0.75rem 1.25rem;
   gap: 1rem;
-  overflow-x: auto;
-  -webkit-overflow-scrolling: touch;
+  overflow: visible;
 }
 
 .menus {
@@ -1874,3 +1873,121 @@ body[data-theme='dark'] {
 
 /* NIFTY + WATCHLIST ACTIONS + FUNDS UI IMPROVEMENTS - END (copilot-marker) */
 
+/* PROFILE DROPDOWN STYLES */
+.profile {
+  position: relative;
+}
+
+.profile-dropdown {
+  position: absolute;
+  top: 100%;
+  right: 0;
+  margin-top: 0.5rem;
+  background: var(--page-surface);
+  border: 1px solid var(--page-border);
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  display: flex;
+  flex-direction: column;
+  min-width: 150px;
+  z-index: 9999;
+  overflow: hidden;
+}
+
+.profile-dropdown a {
+  padding: 0.75rem 1rem;
+  color: var(--page-text);
+  text-decoration: none;
+  font-size: 0.9rem;
+  font-weight: 500;
+  transition: background 0.2s;
+  text-align: left;
+}
+
+.profile-dropdown a:hover {
+  background: var(--page-surface-soft);
+  color: var(--page-accent);
+}
+
+.profile-dropdown hr {
+  margin: 0;
+  border: none;
+  border-bottom: 1px solid var(--page-border);
+  height: 0;
+  width: 100%;
+}
+
+/* GLOBAL UI/UX POLISH - START */
+
+/* 1. Custom Modern Scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  background: var(--page-border);
+  border-radius: 10px;
+  border: 2px solid var(--page-bg);
+}
+::-webkit-scrollbar-thumb:hover {
+  background: var(--page-muted);
+}
+
+/* 2. Accessibility Focus Rings */
+button:focus-visible, 
+input:focus-visible, 
+a:focus-visible {
+  outline: 2px solid var(--page-accent);
+  outline-offset: 2px;
+}
+
+/* 3. Enhanced Card/Table Hover States */
+.table {
+  transition: transform 0.25s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.25s ease;
+}
+.table:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 12px 24px rgba(0, 0, 0, 0.08);
+}
+body[data-theme='dark'] .table:hover {
+  box-shadow: 0 12px 24px rgba(0, 0, 0, 0.4);
+}
+
+/* 4. Improved Empty States (.no-orders) */
+.no-orders {
+  padding: 4rem 2rem;
+  background: var(--page-surface-soft);
+  border: 2px dashed var(--page-border);
+  border-radius: 12px;
+  margin: 2rem 0;
+  transition: all 0.3s ease;
+}
+.no-orders:hover {
+  border-color: var(--page-accent);
+  background: var(--page-surface);
+}
+.no-orders .icon {
+  color: var(--page-muted);
+  transition: color 0.3s ease;
+}
+.no-orders:hover .icon {
+  color: var(--page-accent);
+}
+.no-orders p {
+  color: var(--page-text);
+  font-weight: 500;
+}
+
+/* 5. Global Content Entrance Animation */
+.content {
+  animation: contentFadeIn 0.4s ease-out forwards;
+}
+@keyframes contentFadeIn {
+  from { opacity: 0; transform: translateY(15px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* GLOBAL UI/UX POLISH - END */

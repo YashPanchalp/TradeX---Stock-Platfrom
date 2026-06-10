@@ -74,8 +74,8 @@ const Funds = () => {
           </div>
         </div>
 
-        <div className="col">
-          <div className="commodity">
+        <div className="row">
+          <div className="commodity" style={{padding:"5rem", paddingLeft:"23rem", paddingRight:"23rem"}}>
             <p>You don't have a commodity account</p>
             <Link className="btn btn-blue">Open Account</Link>
           </div>

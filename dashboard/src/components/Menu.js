@@ -102,9 +102,27 @@ const Menu = () => {
           </li>
         </ul>
         <hr />
-        <div className="profile" onClick={handleProfileClick}>
+        <div 
+          className="profile" 
+          onClick={handleProfileClick}
+          onMouseEnter={() => setIsProfileDropdownOpen(true)}
+          onMouseLeave={() => setIsProfileDropdownOpen(false)}
+        >
           <div className="avatar">ZU</div>
           <p className="username">USERID</p>
+
+          {isProfileDropdownOpen && (
+            <div className="profile-dropdown">
+              <Link to="/login" onClick={() => setIsProfileDropdownOpen(false)}>Login</Link>
+              <Link to="/signup" onClick={() => setIsProfileDropdownOpen(false)}>Signup</Link>
+              <hr />
+              <Link to="#" onClick={() => {
+                setIsProfileDropdownOpen(false);
+                localStorage.removeItem("token");
+                window.location.href = "/login";
+              }}>Logout</Link>
+            </div>
+          )}
         </div>
         {/* THEME-TOGGLE-START (copilot-marker) */}
         <button

@@ -3,6 +3,9 @@ const express = require("express");
 const { HoldingsModel } = require("./model/HoldingsModel");
 const { PositionsModel } = require("./model/PositionsModel");
 const { OrdersModel } = require("./model/OrdersModel");
+const { UserModel } = require("./model/UserModel");
+const jwt = require("jsonwebtoken");
+const bcrypt = require("bcryptjs");
 const app = express();
 const mongoose = require("mongoose");
 const bodyParser = require('body-parser');
@@ -13,6 +16,40 @@ const url = process.env.MONGO_URL;
 
 app.use(cors());
 app.use(bodyParser.json());
+
+// AUTH ENDPOINTS
+app.post("/signup", async (req, res) => {
+  try {
+    const { name, email, password, bankAccount } = req.body;
+    const existingUser = await UserModel.findOne({ email });
+    if (existingUser) return res.status(400).json({ message: "User already exists" });
+
+    const hashedPassword = await bcrypt.hash(password, 10);
+    const newUser = new UserModel({ name, email, password: hashedPassword, bankAccount });
+    await newUser.save();
+
+    const token = jwt.sign({ id: newUser._id }, process.env.JWT_SECRET || "secret_key", { expiresIn: "1d" });
+    res.status(201).json({ message: "User created successfully", token });
+  } catch (error) {
+    res.status(500).json({ message: "Error signing up", error });
+  }
+});
+
+app.post("/login", async (req, res) => {
+  try {
+    const { email, password } = req.body;
+    const user = await UserModel.findOne({ email });
+    if (!user) return res.status(404).json({ message: "User not found" });
+
+    const isMatch = await bcrypt.compare(password, user.password);
+    if (!isMatch) return res.status(400).json({ message: "Invalid credentials" });
+
+    const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET || "secret_key", { expiresIn: "1d" });
+    res.status(200).json({ message: "Login successful", token });
+  } catch (error) {
+    res.status(500).json({ message: "Error logging in", error });
+  }
+});
 
 // app.get("/addHoldings", async (req, res) => {
 //   let tempHoldings = [
@@ -191,6 +228,12 @@ app.get('/allPositions', async(req,res)=> {
   res.json(allPositions);
 })
 
+//API ENDPOINT TO GET THE ORDERS DATA
+app.get('/allOrders', async(req,res)=> {
+  let allOrders = await OrdersModel.find({});
+  res.json(allOrders);
+})
+
 //API ENDPOINT FOR THE PLACE NEW ORDER
 app.post('/newOrder', async (req,res) => {
   let newOrder = new OrdersModel({
@@ -202,7 +245,6 @@ app.post('/newOrder', async (req,res) => {
   newOrder.save();
   res.send("Orders saved");
 });
-
 
 app.get("/", (req, res) => {
   res.send("Home route");
