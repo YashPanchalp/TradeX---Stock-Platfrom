@@ -24,6 +24,7 @@ const Signup = () => {
         name, email, password, bankAccount: bank
       });
       localStorage.setItem("token", res.data.token);
+      localStorage.setItem("username", res.data.name);
       window.location.href = "/"; // Force full reload to update auth state
     } catch (error) {
       alert("Signup failed: " + (error.response?.data?.message || "Error processing request"));

@@ -581,19 +581,20 @@ hr {
 
 .topbar-container {
   width: 100%;
-  height: 10vh;
+  height: 68px;
   display: flex;
   align-items: center;
-  box-shadow: 0px 0px 4px 2px rgb(236, 235, 235);
+  border-bottom: 1px solid var(--page-border);
+  background: var(--page-surface);
   box-sizing: border-box;
-  z-index: 9;
+  z-index: 99;
 }
 
 .indices-container {
   flex-basis: 32%;
   height: 100%;
   padding: 10px 20px;
-  border-right: 1px solid rgb(224, 224, 224);
+  border-right: 1px solid var(--page-border);
   box-sizing: border-box;
   display: flex;
   align-items: center;
@@ -621,23 +622,23 @@ hr {
 }
 
 .index {
-  font-size: 0.8rem;
-  font-weight: 500;
+  font-size: 0.85rem;
+  font-weight: 600;
   text-transform: uppercase;
-  color: rgb(97, 97, 97);
+  color: var(--page-text);
   white-space: nowrap;
 }
 
 .index-points {
-  font-size: 0.8rem;
+  font-size: 0.85rem;
   font-weight: 500;
-  color: rgb(223, 73, 73);
+  color: #fa764e;
 }
 
 .percent {
-  font-size: 0.8rem;
-  font-weight: 400;
-  color: rgb(146, 146, 146);
+  font-size: 0.85rem;
+  font-weight: 500;
+  color: var(--page-muted);
 }
 
 /* sudo selectors */
@@ -997,9 +998,19 @@ body[data-theme='dark'] {
   display: flex;
   align-items: center;
   justify-content: center;
-  background: rgb(252, 229, 252);
+  background: var(--page-accent);
+  color: #fff;
   flex-shrink: 0;
-  font-weight: 500;
+  font-weight: 600;
+  font-size: 0.95rem;
+  letter-spacing: 0.5px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+  transition: all 0.2s ease;
+}
+
+.profile:hover .avatar {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
 }
 
 .profile .username {
@@ -1991,3 +2002,20 @@ body[data-theme='dark'] .table:hover {
 }
 
 /* GLOBAL UI/UX POLISH - END */
+
+.buy-window-footer {
+  background-color: transparent !important;
+  color: var(--page-text) !important;
+  outline: none !important;
+}
+
+
+
+.form-input:focus,
+.form-input:active {
+  background: var(--page-bg) !important;
+  color: var(--page-text) !important;
+  border-color: var(--page-accent) !important;
+  outline: none !important;
+  box-shadow: 0 0 0 2px rgba(13, 110, 253, 0.2) !important;
+}

@@ -1,10 +1,12 @@
 import React from "react";
 
 const Summary = () => {
+  const username = localStorage.getItem("username") || "User";
+
   return (
     <>
-      <div className="username">
-        <h6>Hi, User!</h6>
+      <div className="username p-5 m-5">
+        <h6>Hello , {username} ! </h6>
         <hr className="divider" />
       </div>
 

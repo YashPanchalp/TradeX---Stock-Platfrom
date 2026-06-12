@@ -12,6 +12,7 @@ const Login = () => {
     try {
       const res = await axios.post("http://localhost:3002/login", { email, password });
       localStorage.setItem("token", res.data.token);
+      localStorage.setItem("username", res.data.name);
       window.location.href = "/"; // Force full reload to update auth state
     } catch (error) {
       alert("Login failed: " + (error.response?.data?.message || "Invalid Credentials"));

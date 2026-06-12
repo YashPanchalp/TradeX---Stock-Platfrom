@@ -29,7 +29,7 @@ app.post("/signup", async (req, res) => {
     await newUser.save();
 
     const token = jwt.sign({ id: newUser._id }, process.env.JWT_SECRET || "secret_key", { expiresIn: "1d" });
-    res.status(201).json({ message: "User created successfully", token });
+    res.status(201).json({ message: "User created successfully", token, name: newUser.name });
   } catch (error) {
     res.status(500).json({ message: "Error signing up", error });
   }
@@ -45,7 +45,7 @@ app.post("/login", async (req, res) => {
     if (!isMatch) return res.status(400).json({ message: "Invalid credentials" });
 
     const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET || "secret_key", { expiresIn: "1d" });
-    res.status(200).json({ message: "Login successful", token });
+    res.status(200).json({ message: "Login successful", token, name: user.name });
   } catch (error) {
     res.status(500).json({ message: "Error logging in", error });
   }

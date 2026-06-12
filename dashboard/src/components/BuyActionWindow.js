@@ -63,7 +63,7 @@ const BuyActionWindow = ({ uid, currentPrice = 0, actionType = "BUY" }) => {
           <div className="buy-window-section center-section">
             <div className="order-form">
               <div className="form-group">
-                <label htmlFor="qty">Quantity</label>
+                <label htmlFor="qty" style={{color:"#4184f3"}}>Quantity</label>
                 <input
                   type="number"
                   name="qty"
@@ -76,7 +76,7 @@ const BuyActionWindow = ({ uid, currentPrice = 0, actionType = "BUY" }) => {
               </div>
 
               <div className="form-group">
-                <label htmlFor="price">Price per Unit</label>
+                <label htmlFor="price" style={{color:"#4184f3"}}>Price per Unit</label>
                 <input
                   type="number"
                   name="price"

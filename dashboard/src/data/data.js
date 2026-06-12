@@ -53,6 +53,12 @@ export const watchlist = [
     percent: "1.04%",
     isDown: false,
   },
+  {
+    name: "ADANI",
+    price: 1516.4,
+    percent: "2.02%",
+    isDown: false,
+  },
 ];
 
 // holdings
