@@ -6,11 +6,34 @@ const Orders = () => {
   const [allOrders, setAllOrders] = useState([]);
 
   useEffect(() => {
-    axios.get("http://localhost:3002/allOrders").then((res) => {
+    const token = localStorage.getItem("token");
+    axios.get("http://localhost:3002/allOrders", {
+      headers: { Authorization: `Bearer ${token}` }
+    }).then((res) => {
       setAllOrders(res.data);
     }).catch((error) => {
       console.warn("API request failed.", error);
     });
+  }, []);
+
+  // Live ticking effect for Orders
+  useEffect(() => {
+    const tick = () => {
+      setAllOrders((prevOrders) =>
+        prevOrders.map((order) => {
+          const currentLtp = order.ltp || order.price;
+          // Random change between -0.10% and +0.10%
+          const changePercent = (Math.random() * 2 - 1) / 1000;
+          const newLtp = currentLtp * (1 + changePercent);
+          return {
+            ...order,
+            ltp: parseFloat(newLtp.toFixed(2)),
+          };
+        })
+      );
+    };
+    const interval = setInterval(tick, 3000);
+    return () => clearInterval(interval);
   }, []);
 
   return (
@@ -37,9 +60,8 @@ const Orders = () => {
               </tr>
               {allOrders.map((order, index) => {
                 const modeClass = order.mode === "BUY" ? "profit" : "loss";
-                // Mock LTP calculation to demonstrate UI behavior since there's no live market feed
-                const mockLTP = Number(order.price) * (order.mode === "BUY" ? 1.01 : 0.99); // Mock +1.00% or -1.00%
-                const variationPercentage = (((mockLTP - order.price) / order.price) * 100).toFixed(2);
+                const currentLTP = order.ltp || order.price;
+                const variationPercentage = (((currentLTP - order.price) / order.price) * 100).toFixed(2);
                 const variationClass = variationPercentage >= 0 ? "profit" : "loss";
 
                 return (
@@ -48,7 +70,7 @@ const Orders = () => {
                     <td className={modeClass}>{order.mode}</td>
                     <td>{order.qty}</td>
                     <td>{Number(order.price).toFixed(2)}</td>
-                    <td>{mockLTP.toFixed(2)}</td>
+                    <td>{Number(currentLTP).toFixed(2)}</td>
                     <td className={variationClass}>{variationPercentage >= 0 ? "+" : ""}{variationPercentage}%</td>
                   </tr>
                 );

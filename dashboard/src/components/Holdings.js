@@ -8,13 +8,35 @@ const Holdings = () => {
   const [allHoldings, setAllHoldings] = useState(holdings);
 
   useEffect(() => {
-    axios.get("http://localhost:3002/allHoldings").then((res) => {
+    const token = localStorage.getItem("token");
+    axios.get("http://localhost:3002/allHoldings", {
+      headers: { Authorization: `Bearer ${token}` }
+    }).then((res) => {
       // console.log(res.data);
       setAllHoldings(res.data);
     }).catch((error) => {
       console.warn("Using local holdings data because the API request failed.", error);
       setAllHoldings(holdings);
     });
+  }, []);
+
+  // Live ticking effect for Holdings
+  useEffect(() => {
+    const tick = () => {
+      setAllHoldings((prevHoldings) =>
+        prevHoldings.map((stock) => {
+          // Random change between -0.10% and +0.10%
+          const changePercent = (Math.random() * 2 - 1) / 1000;
+          const newPrice = stock.price * (1 + changePercent);
+          return {
+            ...stock,
+            price: parseFloat(newPrice.toFixed(2)),
+          };
+        })
+      );
+    };
+    const interval = setInterval(tick, 3000);
+    return () => clearInterval(interval);
   }, []);
 
   // const labels = ['January', 'February', 'March', 'April', 'May', 'June', 'July'];
@@ -47,6 +69,15 @@ const Holdings = () => {
   //   ],
   // };
 
+  let totalInvestment = 0;
+  let totalCurrentValue = 0;
+  allHoldings.forEach((stock) => {
+    totalInvestment += stock.avg * stock.qty;
+    totalCurrentValue += stock.price * stock.qty;
+  });
+  const totalPnL = totalCurrentValue - totalInvestment;
+  const totalPnLPercentage = totalInvestment > 0 ? (totalPnL / totalInvestment) * 100 : 0;
+
   return (
     <>
       <h3 className="title">Holdings ({allHoldings.length})</h3>
@@ -69,6 +100,7 @@ const Holdings = () => {
             const isProfit = curValue - stock.avg * stock.qty >= 0;
             const profClass = isProfit ? "profit" : "loss";
             const dayClass = stock.isLoss ? "loss" : "profit";
+            const pctChangeValue = ((stock.price - stock.avg) / stock.avg) * 100;
 
             return (
               <tr key={index}>
@@ -80,7 +112,9 @@ const Holdings = () => {
                 <td className={profClass}>
                   {(curValue - stock.avg * stock.qty).toFixed(2)}
                 </td>
-                <td className={profClass}>{stock.net}</td>
+                <td className={profClass}>
+                  {pctChangeValue >= 0 ? "+" : ""}{pctChangeValue.toFixed(2)}%
+                </td>
                 <td className={dayClass}>{stock.day}</td>
               </tr>
             );
@@ -91,18 +125,20 @@ const Holdings = () => {
       <div className="row">
         <div className="col">
           <h5>
-            29,875.<span>55</span>{" "}
+            {totalInvestment.toLocaleString("en-IN", { maximumFractionDigits: 2 })}
           </h5>
           <p>Total investment</p>
         </div>
         <div className="col">
           <h5>
-            31,428.<span>95</span>{" "}
+            {totalCurrentValue.toLocaleString("en-IN", { maximumFractionDigits: 2 })}
           </h5>
           <p>Current value</p>
         </div>
         <div className="col">
-          <h5>1,553.40 (+5.20%)</h5>
+          <h5 className={totalPnL >= 0 ? "profit" : "loss"}>
+            {totalPnL.toLocaleString("en-IN", { maximumFractionDigits: 2 })} ({totalPnL >= 0 ? "+" : ""}{totalPnLPercentage.toFixed(2)}%)
+          </h5>
           <p>P&L</p>
         </div>
       </div>

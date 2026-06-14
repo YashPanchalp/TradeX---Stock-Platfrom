@@ -1,3 +1,4 @@
+//-------------------------------------------//
 require("dotenv").config();
 const express = require("express");
 const { HoldingsModel } = require("./model/HoldingsModel");
@@ -10,12 +11,25 @@ const app = express();
 const mongoose = require("mongoose");
 const bodyParser = require('body-parser');
 const cors = require('cors');
-
 const PORT = process.env.PORT || 3002;
 const url = process.env.MONGO_URL;
+//------------------------------------------//
 
 app.use(cors());
 app.use(bodyParser.json());
+
+// Middleware to authenticate JWT token
+const authenticateToken = (req, res, next) => {
+  const authHeader = req.headers['authorization'];
+  const token = authHeader && authHeader.split(' ')[1];
+  if (!token) return res.status(401).json({ message: "Access Denied" });
+
+  jwt.verify(token, process.env.JWT_SECRET || "secret_key", (err, user) => {
+    if (err) return res.status(403).json({ message: "Invalid Token" });
+    req.user = user;
+    next();
+  });
+};
 
 // AUTH ENDPOINTS
 app.post("/signup", async (req, res) => {
@@ -35,6 +49,8 @@ app.post("/signup", async (req, res) => {
   }
 });
 
+
+//lOGIN rOUTE
 app.post("/login", async (req, res) => {
   try {
     const { email, password } = req.body;
@@ -217,32 +233,103 @@ app.post("/login", async (req, res) => {
 
 //API ENDPOINT TO GET THE HOLDINGS DATA
 
-app.get('/allHoldings', async(req,res)=> {
-  let allHoldings = await HoldingsModel.find({});
+app.get('/allHoldings', authenticateToken, async(req,res)=> {
+  let allHoldings = await HoldingsModel.find({ user: req.user.id });
   res.json(allHoldings);
 })
 
 //API ENDPOINT TO GET THE POSTITIONS DATA
-app.get('/allPositions', async(req,res)=> {
-  let allPositions = await PositionsModel.find({});
+app.get('/allPositions', authenticateToken, async(req,res)=> {
+  let allPositions = await PositionsModel.find({ user: req.user.id });
   res.json(allPositions);
 })
 
 //API ENDPOINT TO GET THE ORDERS DATA
-app.get('/allOrders', async(req,res)=> {
-  let allOrders = await OrdersModel.find({});
+app.get('/allOrders', authenticateToken, async(req,res)=> {
+  let allOrders = await OrdersModel.find({ user: req.user.id });
   res.json(allOrders);
 })
 
 //API ENDPOINT FOR THE PLACE NEW ORDER
-app.post('/newOrder', async (req,res) => {
+app.post('/newOrder', authenticateToken, async (req,res) => {
   let newOrder = new OrdersModel({
     name : req.body.name,
     qty : req.body.qty,
     price : req.body.price,
     mode : req.body.mode,
+    user : req.user.id,
   });
-  newOrder.save();
+  await newOrder.save();
+
+  // Dynamically update Holdings based on the new order
+  if (req.body.mode === "BUY") {
+    let holding = await HoldingsModel.findOne({ name: req.body.name, user: req.user.id });
+    
+    if (holding) {
+      let totalQty = holding.qty + Number(req.body.qty);
+      let totalValue = (holding.qty * holding.avg) + (Number(req.body.qty) * Number(req.body.price));
+      holding.qty = totalQty;
+      holding.avg = totalValue / totalQty;
+      await holding.save();
+    } else {
+      let newHolding = new HoldingsModel({
+        name: req.body.name,
+        qty: Number(req.body.qty),
+        avg: Number(req.body.price),
+        price: Number(req.body.price),
+        net: "+0.00%",
+        day: "+0.00%",
+        user: req.user.id,
+      });
+      await newHolding.save();
+    }
+
+    // Dynamically update Positions
+    let position = await PositionsModel.findOne({ name: req.body.name, user: req.user.id });
+    if (position) {
+      let totalQty = position.qty + Number(req.body.qty);
+      let totalValue = (position.qty * position.avg) + (Number(req.body.qty) * Number(req.body.price));
+      position.qty = totalQty;
+      position.avg = totalValue / totalQty;
+      await position.save();
+    } else {
+      let newPosition = new PositionsModel({
+        product: "CNC",
+        name: req.body.name,
+        qty: Number(req.body.qty),
+        avg: Number(req.body.price),
+        price: Number(req.body.price),
+        net: "+0.00%",
+        day: "+0.00%",
+        isLoss: false,
+        user: req.user.id,
+      });
+      await newPosition.save();
+    }
+  } else if (req.body.mode === "SELL") {
+    let holding = await HoldingsModel.findOne({ name: req.body.name, user: req.user.id });
+    if (holding) {
+      holding.qty -= Number(req.body.qty);
+      // If the user sold all their shares, remove the holding entirely
+      if (holding.qty <= 0) {
+        await HoldingsModel.deleteOne({ _id: holding._id });
+      } else {
+        await holding.save();
+      }
+    }
+
+    // Dynamically update Positions
+    let position = await PositionsModel.findOne({ name: req.body.name, user: req.user.id });
+    if (position) {
+      position.qty -= Number(req.body.qty);
+      if (position.qty <= 0) {
+        await PositionsModel.deleteOne({ _id: position._id });
+      } else {
+        await position.save();
+      }
+    }
+  }
+
   res.send("Orders saved");
 });
 

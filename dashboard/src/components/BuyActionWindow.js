@@ -20,11 +20,14 @@ const BuyActionWindow = ({ uid, currentPrice = 0, actionType = "BUY" }) => {
       alert("Please enter a valid price");
       return;
     }
+    const token = localStorage.getItem("token");
     axios.post("http://localhost:3002/newOrder", {
       name: uid,
       qty: stockQuantity,
       price: stockPrice,
       mode: primaryActionLabel,
+    }, {
+      headers: { Authorization: `Bearer ${token}` }
     });
 
     context.closeBuyWindow();
