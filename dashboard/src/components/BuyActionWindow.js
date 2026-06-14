@@ -6,9 +6,9 @@ import GeneralContext from "./GeneralContext";
 
 import "./BuyActionWindow.css";
 
-const BuyActionWindow = ({ uid, currentPrice = 0, actionType = "BUY" }) => {
+const BuyActionWindow = ({ uid, currentPrice = 0, actionType = "BUY", initialQty = 1, isDown = false, percent = "0.00%" }) => {
   const context = useContext(GeneralContext);
-  const [stockQuantity, setStockQuantity] = useState(1);
+  const [stockQuantity, setStockQuantity] = useState(initialQty);
   const [stockPrice, setStockPrice] = useState(currentPrice || 0);
   const isSellMode = actionType === "SELL";
   const primaryActionLabel = isSellMode ? "SELL" : "BUY";
@@ -41,6 +41,7 @@ const BuyActionWindow = ({ uid, currentPrice = 0, actionType = "BUY" }) => {
         headers: { Authorization: `Bearer ${token}` }
       });
 
+      context.triggerRefresh();
       setToast({ message: `Successfully ${isSellMode ? 'sold' : 'bought'} ${stockQuantity} shares of ${uid}`, type: "success" });
       setTimeout(() => {
         context.closeBuyWindow();
@@ -127,9 +128,10 @@ const BuyActionWindow = ({ uid, currentPrice = 0, actionType = "BUY" }) => {
                   name="price"
                   id="price"
                   step="0.05"
-                  onChange={(e) => setStockPrice(e.target.value)}
                   value={stockPrice}
                   className="form-input"
+                readOnly
+                style={{ cursor: "not-allowed", opacity: 0.7, backgroundColor: "var(--page-surface-soft)" }}
                 />
               </div>
             </div>

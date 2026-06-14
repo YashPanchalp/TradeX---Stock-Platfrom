@@ -1,11 +1,13 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import axios from "axios";
 import { VerticalGraph } from "./VerticalGraph";
+import GeneralContext from "./GeneralContext";
 
 import { holdings } from "../data/data";
 
 const Holdings = () => {
   const [allHoldings, setAllHoldings] = useState(holdings);
+  const context = useContext(GeneralContext);
 
   useEffect(() => {
     const token = localStorage.getItem("token");
@@ -18,7 +20,7 @@ const Holdings = () => {
       console.warn("Using local holdings data because the API request failed.", error);
       setAllHoldings(holdings);
     });
-  }, []);
+  }, [context.refreshTrigger]);
 
   // Live ticking effect for Holdings
   useEffect(() => {
@@ -92,7 +94,7 @@ const Holdings = () => {
             <th>Cur. val</th>
             <th>P&L</th>
             <th>Net chg.</th>
-            <th>Day chg.</th>
+            <th>Action</th>
           </tr>
 
           {allHoldings.map((stock, index) => {
@@ -101,6 +103,8 @@ const Holdings = () => {
             const profClass = isProfit ? "profit" : "loss";
             const dayClass = stock.isLoss ? "loss" : "profit";
             const pctChangeValue = ((stock.price - stock.avg) / stock.avg) * 100;
+            const isDown = pctChangeValue < 0;
+            const percent = Math.abs(pctChangeValue).toFixed(2) + "%";
 
             return (
               <tr key={index}>
@@ -115,7 +119,14 @@ const Holdings = () => {
                 <td className={profClass}>
                   {pctChangeValue >= 0 ? "+" : ""}{pctChangeValue.toFixed(2)}%
                 </td>
-                <td className={dayClass}>{stock.day}</td>
+                <td>
+                  <button 
+                    style={{ background: "#fa764e", color: "#fff", border: "none", padding: "0.3rem 0.8rem", borderRadius: "4px", cursor: "pointer", fontWeight: "500", transition: "all 0.2s" }}
+                    onClick={() => context.openBuyWindow(stock.name, stock.price, "SELL", stock.qty, isDown, percent)}
+                  >
+                    Sell
+                  </button>
+                </td>
               </tr>
             );
           })}

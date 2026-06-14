@@ -1,11 +1,13 @@
 import React from "react";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext } from "react";
 import axios from "axios";
+import GeneralContext from "./GeneralContext";
 
 const Summary = () => {
   const username = localStorage.getItem("username") || "User";
   const [balance, setBalance] = useState(0);
   const [holdings, setHoldings] = useState([]);
+  const context = useContext(GeneralContext);
 
   useEffect(() => {
     const token = localStorage.getItem("token");
@@ -20,7 +22,7 @@ const Summary = () => {
     })
     .then(res => setHoldings(res.data))
     .catch(err => console.warn(err));
-  }, []);
+  }, [context.refreshTrigger]);
 
   // Live ticking effect for Summary holdings
   useEffect(() => {

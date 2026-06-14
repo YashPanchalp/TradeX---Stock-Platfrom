@@ -1,7 +1,8 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext } from "react";
 import axios from "axios";
+import GeneralContext from "./GeneralContext";
 
 const Funds = () => {
   const [balance, setBalance] = useState(0);
@@ -11,10 +12,11 @@ const Funds = () => {
   const [modalType, setModalType] = useState("ADD"); // 'ADD' or 'WITHDRAW'
   const [amount, setAmount] = useState("");
   const [error, setError] = useState("");
+  const context = useContext(GeneralContext);
 
   useEffect(() => {
     fetchFunds();
-  }, []);
+  }, [context.refreshTrigger]);
 
   const fetchFunds = async () => {
     try {
@@ -68,6 +70,7 @@ const Funds = () => {
       });
       setBalance(res.data.balance);
       setIsModalOpen(false);
+      context.triggerRefresh();
     } catch (err) {
       setError(err.response?.data?.message || "An error occurred processing request");
     }

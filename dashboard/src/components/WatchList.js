@@ -261,7 +261,7 @@ const WatchListItem = ({ stock, onAnalyticsClick }) => {
           <span className="price">{stock.price}</span>
         </div>
       </div>
-      {showWatchlistActions && <WatchListActions uid={stock.name} price={stock.price} onAnalyticsClick={onAnalyticsClick} />}
+      {showWatchlistActions && <WatchListActions stock={stock} onAnalyticsClick={onAnalyticsClick} />}
     </li>
   );
 };
@@ -269,15 +269,15 @@ const WatchListItem = ({ stock, onAnalyticsClick }) => {
 // NEW COMPONENT WatchListActions
 //--------------------------
 
-const WatchListActions = ({ uid, price, onAnalyticsClick }) => {
+const WatchListActions = ({ stock, onAnalyticsClick }) => {
   const generalContext = useContext(GeneralContext);
 
   const handleBuyClick = () => {
-    generalContext.openBuyWindow(uid, price, "BUY");
+    generalContext.openBuyWindow(stock.name, stock.price, "BUY", 1, stock.isDown, stock.percent);
   };
 
   const handleSellClick = () => {
-    generalContext.openBuyWindow(uid, price, "SELL");
+    generalContext.openBuyWindow(stock.name, stock.price, "SELL", 1, stock.isDown, stock.percent);
   };
 
   return (

@@ -2,12 +2,14 @@ import React from "react";
 
 import { positions } from "../data/data";
 import { useState } from "react";
-import { useEffect } from "react";
+import { useEffect, useContext } from "react";
 import axios from "axios";
+import GeneralContext from "./GeneralContext";
 
 const Positions = () => {
 
   const [allPositions, setAllPositions] = useState([]);
+  const context = useContext(GeneralContext);
 
   useEffect(() => {
     const token = localStorage.getItem("token");
@@ -19,7 +21,7 @@ const Positions = () => {
         console.warn("Using local positions data because the API request failed.", error);
         setAllPositions(positions);
         });
-  }, []);
+  }, [context.refreshTrigger]);
 
   // Live ticking effect for Positions
   useEffect(() => {

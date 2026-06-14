@@ -730,7 +730,7 @@ hr {
 .actions {
   position: absolute;
   top: 50%;
-  right: 0.75rem;
+  right: 9rem;
   transform: translateY(-50%);
   height: auto;
   align-items: center;
@@ -1775,7 +1775,7 @@ body[data-theme='dark'] {
   }
 
   .actions {
-    right: 0.5rem;
+    right: 3rem;
   }
 
   .actions span button {
@@ -1838,7 +1838,7 @@ body[data-theme='dark'] {
   }
 
   .actions {
-    right: 0.25rem;
+    right: 2.5rem;
   }
 
   .actions span button {
