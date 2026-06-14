@@ -4,6 +4,7 @@ const express = require("express");
 const { HoldingsModel } = require("./model/HoldingsModel");
 const { PositionsModel } = require("./model/PositionsModel");
 const { OrdersModel } = require("./model/OrdersModel");
+const { FundsModel } = require("./model/FundsModel");
 const { UserModel } = require("./model/UserModel");
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcryptjs");
@@ -41,6 +42,9 @@ app.post("/signup", async (req, res) => {
     const hashedPassword = await bcrypt.hash(password, 10);
     const newUser = new UserModel({ name, email, password: hashedPassword, bankAccount });
     await newUser.save();
+
+    const newFunds = new FundsModel({ user: newUser._id, balance: 0 });
+    await newFunds.save();
 
     const token = jwt.sign({ id: newUser._id }, process.env.JWT_SECRET || "secret_key", { expiresIn: "1d" });
     res.status(201).json({ message: "User created successfully", token, name: newUser.name });
@@ -250,12 +254,77 @@ app.get('/allOrders', authenticateToken, async(req,res)=> {
   res.json(allOrders);
 })
 
+// API ENDPOINT TO GET FUNDS AND BANK ACCOUNT
+app.get('/funds', authenticateToken, async(req, res) => {
+  let funds = await FundsModel.findOne({ user: req.user.id });
+  if (!funds) {
+    funds = new FundsModel({ user: req.user.id, balance: 0 });
+    await funds.save();
+  }
+  const user = await UserModel.findById(req.user.id);
+  res.json({ balance: funds.balance, bankAccount: user ? user.bankAccount : 'Not Available' });
+});
+
+// API ENDPOINT TO UPDATE FUNDS (ADD/WITHDRAW)
+app.post('/funds/update', authenticateToken, async(req, res) => {
+  const { amount, action } = req.body;
+  let funds = await FundsModel.findOne({ user: req.user.id });
+  if (!funds) {
+    funds = new FundsModel({ user: req.user.id, balance: 0 });
+  }
+  
+  if (action === 'ADD') {
+    funds.balance += Number(amount);
+  } else if (action === 'WITHDRAW') {
+    let allHoldings = await HoldingsModel.find({ user: req.user.id });
+    let currentUsedMargin = 0;
+    allHoldings.forEach(h => currentUsedMargin += (h.avg * h.qty) * 1.15);
+    let availableMargin = funds.balance - currentUsedMargin;
+    if (availableMargin < Number(amount)) {
+      return res.status(400).json({ message: `Insufficient available margin. You only have ₹${availableMargin.toFixed(2)} to withdraw` });
+    }
+    funds.balance -= Number(amount);
+  }
+  await funds.save();
+  res.json({ balance: funds.balance });
+});
+
 //API ENDPOINT FOR THE PLACE NEW ORDER
 app.post('/newOrder', authenticateToken, async (req,res) => {
+  const orderQty = Number(req.body.qty);
+  const orderPrice = Number(req.body.price);
+  const totalValue = orderQty * orderPrice;
+  const marginNeeded = totalValue + (totalValue * 0.15); // price total + 15%
+
+  let funds = await FundsModel.findOne({ user: req.user.id });
+  if (!funds) {
+    funds = new FundsModel({ user: req.user.id, balance: 0 });
+  }
+
+  if (req.body.mode === "BUY") {
+    let allHoldings = await HoldingsModel.find({ user: req.user.id });
+    let currentUsedMargin = 0;
+    allHoldings.forEach(h => currentUsedMargin += (h.avg * h.qty) * 1.15);
+    
+    if (funds.balance - currentUsedMargin < marginNeeded) {
+      return res.status(400).json({ message: "Insufficient margin. Please add more funds." });
+    }
+  } else if (req.body.mode === "SELL") {
+    let holding = await HoldingsModel.findOne({ name: req.body.name, user: req.user.id });
+    if (!holding || holding.qty < orderQty) {
+      return res.status(400).json({ message: "Insufficient holdings to sell." });
+    }
+        
+        // Update funds with the realized profit/loss so cash is correctly returned
+        const realizedPnL = (orderPrice - holding.avg) * orderQty;
+        funds.balance += realizedPnL;
+        await funds.save();
+  }
+
   let newOrder = new OrdersModel({
     name : req.body.name,
-    qty : req.body.qty,
-    price : req.body.price,
+    qty : orderQty,
+    price : orderPrice,
     mode : req.body.mode,
     user : req.user.id,
   });
@@ -266,17 +335,17 @@ app.post('/newOrder', authenticateToken, async (req,res) => {
     let holding = await HoldingsModel.findOne({ name: req.body.name, user: req.user.id });
     
     if (holding) {
-      let totalQty = holding.qty + Number(req.body.qty);
-      let totalValue = (holding.qty * holding.avg) + (Number(req.body.qty) * Number(req.body.price));
+      let totalQty = holding.qty + orderQty;
+      let totalHoldingValue = (holding.qty * holding.avg) + totalValue;
       holding.qty = totalQty;
-      holding.avg = totalValue / totalQty;
+      holding.avg = totalHoldingValue / totalQty;
       await holding.save();
     } else {
       let newHolding = new HoldingsModel({
         name: req.body.name,
-        qty: Number(req.body.qty),
-        avg: Number(req.body.price),
-        price: Number(req.body.price),
+        qty: orderQty,
+        avg: orderPrice,
+        price: orderPrice,
         net: "+0.00%",
         day: "+0.00%",
         user: req.user.id,
@@ -287,18 +356,18 @@ app.post('/newOrder', authenticateToken, async (req,res) => {
     // Dynamically update Positions
     let position = await PositionsModel.findOne({ name: req.body.name, user: req.user.id });
     if (position) {
-      let totalQty = position.qty + Number(req.body.qty);
-      let totalValue = (position.qty * position.avg) + (Number(req.body.qty) * Number(req.body.price));
+      let totalQty = position.qty + orderQty;
+      let totalPositionValue = (position.qty * position.avg) + totalValue;
       position.qty = totalQty;
-      position.avg = totalValue / totalQty;
+      position.avg = totalPositionValue / totalQty;
       await position.save();
     } else {
       let newPosition = new PositionsModel({
         product: "CNC",
         name: req.body.name,
-        qty: Number(req.body.qty),
-        avg: Number(req.body.price),
-        price: Number(req.body.price),
+        qty: orderQty,
+        avg: orderPrice,
+        price: orderPrice,
         net: "+0.00%",
         day: "+0.00%",
         isLoss: false,
@@ -309,7 +378,7 @@ app.post('/newOrder', authenticateToken, async (req,res) => {
   } else if (req.body.mode === "SELL") {
     let holding = await HoldingsModel.findOne({ name: req.body.name, user: req.user.id });
     if (holding) {
-      holding.qty -= Number(req.body.qty);
+      holding.qty -= orderQty;
       // If the user sold all their shares, remove the holding entirely
       if (holding.qty <= 0) {
         await HoldingsModel.deleteOne({ _id: holding._id });
@@ -321,7 +390,7 @@ app.post('/newOrder', authenticateToken, async (req,res) => {
     // Dynamically update Positions
     let position = await PositionsModel.findOne({ name: req.body.name, user: req.user.id });
     if (position) {
-      position.qty -= Number(req.body.qty);
+      position.qty -= orderQty;
       if (position.qty <= 0) {
         await PositionsModel.deleteOne({ _id: position._id });
       } else {

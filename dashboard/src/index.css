@@ -1387,6 +1387,7 @@ body[data-theme='dark'] {
   gap: 1.5rem;
   margin-bottom: 2rem;
   box-shadow: 0 4px 20px rgba(13, 110, 253, 0.2);
+  box-sizing: border-box;
 }
 
 .funds p {
@@ -1412,14 +1413,6 @@ body[data-theme='dark'] {
   background: rgba(255, 255, 255, 0.25);
   border-color: rgba(255, 255, 255, 0.5);
   transform: translateY(-2px);
-}
-
-.funds .btn:not(:last-child) {
-  margin-right: 1rem;
-}
-
-.funds .btn:last-child {
-  margin-left: auto;
 }
 
 /* Improved Dashboard rows and columns */
@@ -1467,6 +1460,7 @@ body[data-theme='dark'] {
 /* Equity section specific improvements */
 .col .table:first-of-type {
   padding: 2rem 1.75rem;
+  padding: 1rem 1.25rem;
 }
 
 .table .data {
@@ -1474,10 +1468,16 @@ body[data-theme='dark'] {
   align-items: center;
   justify-content: space-between;
   padding: 1rem 0;
+  padding: 0.5rem 0.5rem;
   transition: all 0.2s ease;
   border-radius: 6px;
   padding-left: 0.5rem;
   padding-right: 0.5rem;
+  margin-bottom: 1rem;
+}
+
+.table .data:last-child {
+  margin-bottom: 0;
 }
 
 .table .data:hover {
@@ -2002,6 +2002,60 @@ body[data-theme='dark'] .table:hover {
 }
 
 /* GLOBAL UI/UX POLISH - END */
+
+/* --- FUNDS ACTION MODAL STYLING --- */
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 10000;
+  backdrop-filter: blur(4px);
+}
+
+.modal-content {
+  background: var(--page-surface);
+  padding: 2rem;
+  border-radius: 12px;
+  width: 90%;
+  max-width: 420px;
+  border: 1px solid var(--page-border);
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+}
+
+.modal-content h3 {
+  margin-top: 0;
+  margin-bottom: 1.5rem;
+  color: var(--page-text);
+}
+
+.modal-content .bank-info {
+  font-size: 0.9rem;
+  color: var(--page-muted);
+  background: var(--page-surface-soft);
+  padding: 1rem;
+  border-radius: 6px;
+  margin-bottom: 1.5rem;
+  border: 1px solid var(--page-border);
+}
+
+.modal-content .error-msg {
+  color: #fa764e;
+  font-size: 0.85rem;
+  margin-bottom: 1rem;
+}
+
+.modal-actions {
+  display: flex;
+  gap: 1rem;
+  justify-content: flex-end;
+  margin-top: 1rem;
+}
 
 .buy-window-footer {
   background-color: transparent !important;
