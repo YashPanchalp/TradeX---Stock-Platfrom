@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import axios from "axios";
 import "./Auth.css";
@@ -9,6 +9,10 @@ const Signup = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [bank, setBank] = useState("");
+
+  useEffect(() => {
+    document.body.dataset.theme = 'dark';
+  }, []);
 
   const handleLinkAccount = () => {
     setShowToast(true);

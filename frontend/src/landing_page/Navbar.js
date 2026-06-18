@@ -46,6 +46,11 @@ function Navbar() {
                 </Link>
               </li>
               <li className="nav-item">
+                <Link className="nav-link active" aria-current="page" to="/login">
+                  Login
+                </Link>
+              </li>
+              <li className="nav-item">
                 <Link className="nav-link active" to="/about">
                   About
                 </Link>

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import axios from "axios";
 import "./Auth.css";
@@ -6,6 +6,10 @@ import "./Auth.css";
 const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+
+  useEffect(() => {
+    document.body.dataset.theme = 'dark';
+  }, []);
 
   const handleLogin = async (e) => {
     e.preventDefault();
