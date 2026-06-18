@@ -4,7 +4,7 @@ import {Link} from "react-router-dom";
 function Navbar() {
   const [isDarkTheme, setIsDarkTheme] = useState(() => {
     const savedTheme = localStorage.getItem('tradex-theme');
-    return savedTheme ? savedTheme === 'dark' : false;
+    return savedTheme ? savedTheme === 'dark' : true;
   });
 
   useEffect(() => {

@@ -1,5 +1,4 @@
-import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import React, { useState, useContext } from "react";
 
 import axios from "axios";
 
@@ -7,62 +6,169 @@ import GeneralContext from "./GeneralContext";
 
 import "./BuyActionWindow.css";
 
-const BuyActionWindow = ({ uid }) => {
-  const [stockQuantity, setStockQuantity] = useState(1);
-  const [stockPrice, setStockPrice] = useState(0.0);
+const BuyActionWindow = ({ uid, currentPrice = 0, actionType = "BUY", initialQty = 1, isDown = false, percent = "0.00%" }) => {
+  const context = useContext(GeneralContext);
+  const [stockQuantity, setStockQuantity] = useState(initialQty);
+  const [stockPrice, setStockPrice] = useState(currentPrice || 0);
+  const isSellMode = actionType === "SELL";
+  const primaryActionLabel = isSellMode ? "SELL" : "BUY";
+  const primaryActionClass = isSellMode ? "btn-secondary" : "btn-primary";
+  const [toast, setToast] = useState({ message: "", type: "" });
+  const [isLoading, setIsLoading] = useState(false);
 
-  const handleBuyClick = () => {
-    axios.post("http://localhost:3002/newOrder", {
-      name: uid,
-      qty: stockQuantity,
-      price: stockPrice,
-      mode: "BUY",
-    });
+  // CONNECT WITH THE API ENDPOINT AND PASS DATA TO THE REQ BODY
+  const handlePrimaryActionClick = async () => {
+    if (!stockQuantity || stockQuantity <= 0) {
+      setToast({ message: "Please enter a valid quantity", type: "error" });
+      setTimeout(() => setToast({ message: "", type: "" }), 3000);
+      return;
+    }
+    if (!stockPrice || stockPrice <= 0) {
+      setToast({ message: "Please enter a valid price", type: "error" });
+      setTimeout(() => setToast({ message: "", type: "" }), 3000);
+      return;
+    }
+    
+    setIsLoading(true);
+    const token = localStorage.getItem("token");
+    try {
+      await axios.post("http://localhost:3002/newOrder", {
+        name: uid,
+        qty: stockQuantity,
+        price: stockPrice,
+        mode: primaryActionLabel,
+      }, {
+        headers: { Authorization: `Bearer ${token}` }
+      });
 
-    GeneralContext.closeBuyWindow();
+      context.triggerRefresh();
+      setToast({ message: `Successfully ${isSellMode ? 'sold' : 'bought'} ${stockQuantity} shares of ${uid}`, type: "success" });
+      setTimeout(() => {
+        context.closeBuyWindow();
+      }, 1500);
+    } catch (err) {
+      setToast({ message: err.response?.data?.message || "Failed to process order", type: "error" });
+      setTimeout(() => setToast({ message: "", type: "" }), 3000);
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   const handleCancelClick = () => {
-    GeneralContext.closeBuyWindow();
+    context.closeBuyWindow();
   };
 
-  return (
-    <div className="container" id="buy-window" draggable="true">
-      <div className="regular-order">
-        <div className="inputs">
-          <fieldset>
-            <legend>Qty.</legend>
-            <input
-              type="number"
-              name="qty"
-              id="qty"
-              onChange={(e) => setStockQuantity(e.target.value)}
-              value={stockQuantity}
-            />
-          </fieldset>
-          <fieldset>
-            <legend>Price</legend>
-            <input
-              type="number"
-              name="price"
-              id="price"
-              step="0.05"
-              onChange={(e) => setStockPrice(e.target.value)}
-              value={stockPrice}
-            />
-          </fieldset>
-        </div>
-      </div>
+  const totalValue = (stockQuantity * stockPrice).toFixed(2);
+  const marginRequired = (totalValue * 0.15).toFixed(2); // 15% margin
+  const totalRequired = (Number(totalValue) + Number(marginRequired)).toFixed(2);
 
-      <div className="buttons">
-        <span>Margin required ₹140.65</span>
-        <div>
-          <Link className="btn btn-blue" onClick={handleBuyClick}>
-            Buy
-          </Link>
-          <Link to="" className="btn btn-grey" onClick={handleCancelClick}>
-            Cancel
-          </Link>
+  return (
+    <div className="buy-window-wrapper">
+      {toast.message && (
+        <div style={{
+          position: 'absolute',
+          top: '20px',
+          left: '50%',
+          transform: 'translateX(-50%)',
+          background: toast.type === 'success' ? '#48c237' : '#fa764e',
+          color: '#fff',
+          padding: '12px 24px',
+          borderRadius: '8px',
+          zIndex: 9999,
+          boxShadow: '0 4px 15px rgba(0,0,0,0.2)',
+          fontWeight: '500',
+          fontSize: '1rem',
+          animation: 'contentFadeIn 0.3s ease-out'
+        }}>
+          {toast.message}
+        </div>
+      )}
+      <div className="buy-window-container">
+        {/* Header */}
+        <div className="buy-window-header">
+          <h2>{uid}</h2>
+          <span className="close-btn" onClick={handleCancelClick}>×</span>
+        </div>
+
+        <div className="buy-window-content">
+          {/* Left Section - Current Price Info */}
+          <div className="buy-window-section left-section">
+            <div className="price-info-card">
+              <h4 className="stock-symbol">{uid}</h4>
+              <label className="info-label">Current Price</label>
+              <h3 className="current-price">₹{Number(currentPrice).toFixed(2)}</h3>
+              <div className="price-details">
+                <span className="detail-label">Market Rate</span>
+              </div>
+            </div>
+          </div>
+
+          {/* Center Section - Input Form */}
+          <div className="buy-window-section center-section">
+            <div className="order-form">
+              <div className="form-group">
+                <label htmlFor="qty" style={{color:"#4184f3"}}>Quantity</label>
+                <input
+                  type="number"
+                  name="qty"
+                  id="qty"
+                  min="1"
+                  onChange={(e) => setStockQuantity(e.target.value)}
+                  value={stockQuantity}
+                  className="form-input"
+                />
+              </div>
+
+              <div className="form-group">
+                <label htmlFor="price" style={{color:"#4184f3"}}>
+                  {isSellMode ? "Sell Price per Unit" : "Buy Price per Unit"}
+                </label>
+                <input
+                  type="number"
+                  name="price"
+                  id="price"
+                  step="0.05"
+                  value={stockPrice}
+                  className="form-input"
+                readOnly
+                style={{ cursor: "not-allowed", opacity: 0.7, backgroundColor: "var(--page-surface-soft)" }}
+                />
+              </div>
+            </div>
+          </div>
+
+          {/* Right Section - Summary */}
+          <div className="buy-window-section right-section">
+            <div className="summary-card">
+              <div className="summary-item">
+                <span className="label">{isSellMode ? "Total Sell Value" : "Total Value"}</span>
+                <span className="value">₹{totalValue}</span>
+              </div>
+              {!isSellMode && (
+                <div className="summary-item">
+                  <span className="label">Margin Required (15%)</span>
+                  <span className="value">₹{marginRequired}</span>
+                </div>
+              )}
+              <div className="divider"></div>
+              <div className="summary-item highlighted">
+                <span className="label">{isSellMode ? "Funds to be Added" : "Total Req (Value + Margin)"}</span>
+                <span className="value">₹{isSellMode ? totalValue : totalRequired}</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* Action Buttons */}
+        <div className="buy-window-footer">
+          <div className="button-group">
+            <button className={`btn ${primaryActionClass}`} onClick={handlePrimaryActionClick}>
+              {primaryActionLabel}
+            </button>
+            <button className="btn btn-cancel" onClick={handleCancelClick}>
+              CANCEL
+            </button>
+          </div>
         </div>
       </div>
     </div>

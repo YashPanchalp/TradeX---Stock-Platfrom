@@ -1,10 +1,16 @@
 body {
   margin: 0;
+  padding: 0;
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
     'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  font-size: 14px;
+  line-height: 1.5;
+  color: var(--page-text);
+  background: var(--page-bg);
+  transition: background-color 0.2s ease, color 0.2s ease;
 }
 
 code {
@@ -21,11 +27,12 @@ code {
 }
 
 .content {
-  flex-basis: 68%;
+  flex: 1;
   height: 100%;
   box-sizing: border-box;
   overflow-y: auto;
-  padding: 3% 2%;
+  padding: 1.5rem;
+  background: var(--page-bg);
 }
 
 .funds {
@@ -44,11 +51,15 @@ code {
 
 .btn {
   text-decoration: none;
-  padding: 10px 20px;
-  border-radius: 2px;
+  padding: 0.625rem 1.25rem;
+  border-radius: 4px;
   color: #fff;
-  margin-right: 2px;
-  margin-left: 2px;
+  border: none;
+  cursor: pointer;
+  font-size: 0.875rem;
+  font-weight: 500;
+  transition: all 0.2s ease;
+  white-space: nowrap;
 }
 
 .btn-green {
@@ -63,8 +74,10 @@ code {
   width: 100%;
   display: flex;
   align-items: center;
-  justify-content: space-evenly;
-  margin-top: 5%;
+  justify-content: space-between;
+  margin-top: 1.5rem;
+  margin-bottom: 1.5rem;
+  gap: 1.5rem;
 }
 
 .col {
@@ -92,25 +105,7 @@ code {
   font-weight: 300;
 }
 
-.table {
-  border: 1px solid #ddd;
-  padding: 5% 8%;
-}
-
-.table .data {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-}
-
-.table .data > * {
-  margin-bottom: 5%;
-}
-
-.table .data p:first-child {
-  font-size: 1rem;
-  color: rgb(151, 151, 151);
-}
+/* Old .table styling replaced with enhanced version in professional improvements section */
 
 .imp {
   font-size: 1.5rem;
@@ -157,19 +152,27 @@ code {
 .order-table table {
   width: 100%;
   border-collapse: collapse;
+  margin-top: 1rem;
 }
 
 .order-table tr {
-  border-top: 1px solid #f1f1f1;
-  border-bottom: 1px solid #f1f1f1;
+  border-bottom: 1px solid var(--page-border);
+  transition: background-color 0.15s ease;
+}
+
+.order-table tr:hover {
+  background-color: var(--page-surface-soft);
 }
 
 .order-table th {
   text-align: right;
-  padding: 15px 10px;
-  color: rgb(145, 145, 145);
-  font-weight: 300;
+  padding: 1rem;
+  color: var(--page-muted);
+  font-weight: 600;
   font-size: 0.8rem;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  background: var(--page-surface);
 }
 
 .order-table tr th:first-child,
@@ -250,13 +253,15 @@ code {
 }
 
 .menu-container {
-  flex-basis: 68%;
+  flex: 1;
   height: 100%;
-  padding: 10px 20px;
+  padding: 0.75rem 1.25rem;
   box-sizing: border-box;
   display: flex;
   align-items: center;
   justify-content: space-between;
+  gap: 1rem;
+  overflow: visible;
 }
 
 .logo {
@@ -267,17 +272,24 @@ code {
 .menus {
   display: flex;
   align-items: center;
-  justify-content: space-evenly;
+  justify-content: flex-start;
+  flex: 1;
+  gap: 1rem;
 }
 
 .menus ul {
   list-style-type: none;
+  display: flex;
+  gap: 1rem;
+  margin: 0;
+  padding: 0;
 }
 
 .menus li {
   display: inline-block;
-  margin-right: 30px;
+  margin: 0;
   text-decoration: none;
+  white-space: nowrap;
 }
 
 .menu {
@@ -298,14 +310,15 @@ hr {
 .profile {
   display: flex;
   align-items: center;
-  justify-content: space-evenly;
-  margin-left: 20px;
+  justify-content: center;
+  gap: 0.5rem;
+  margin-left: auto;
+  flex-shrink: 0;
 }
 
 .profile .avatar {
   width: 30px;
   height: 30px;
-  text-align: center;
   position: relative;
   font-size: 0.7rem;
   font-weight: 400;
@@ -568,19 +581,20 @@ hr {
 
 .topbar-container {
   width: 100%;
-  height: 10vh;
+  height: 68px;
   display: flex;
   align-items: center;
-  box-shadow: 0px 0px 4px 2px rgb(236, 235, 235);
+  border-bottom: 1px solid var(--page-border);
+  background: var(--page-surface);
   box-sizing: border-box;
-  z-index: 9;
+  z-index: 99;
 }
 
 .indices-container {
   flex-basis: 32%;
   height: 100%;
   padding: 10px 20px;
-  border-right: 1px solid rgb(224, 224, 224);
+  border-right: 1px solid var(--page-border);
   box-sizing: border-box;
   display: flex;
   align-items: center;
@@ -608,23 +622,23 @@ hr {
 }
 
 .index {
-  font-size: 0.8rem;
-  font-weight: 500;
+  font-size: 0.85rem;
+  font-weight: 600;
   text-transform: uppercase;
-  color: rgb(97, 97, 97);
+  color: var(--page-text);
   white-space: nowrap;
 }
 
 .index-points {
-  font-size: 0.8rem;
+  font-size: 0.85rem;
   font-weight: 500;
-  color: rgb(223, 73, 73);
+  color: #fa764e;
 }
 
 .percent {
-  font-size: 0.8rem;
-  font-weight: 400;
-  color: rgb(146, 146, 146);
+  font-size: 0.85rem;
+  font-weight: 500;
+  color: var(--page-muted);
 }
 
 /* sudo selectors */
@@ -715,49 +729,17 @@ hr {
 
 .actions {
   position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
+  top: 50%;
+  right: 9rem;
+  transform: translateY(-50%);
+  height: auto;
   align-items: center;
   justify-content: flex-end;
   display: none;
+  gap: 0.5rem;
 }
 
-.actions span button {
-  width: 40px;
-  height: 30px;
-  border-radius: 4px;
-  text-align: center;
-  margin-right: 8px;
-  cursor: pointer;
-}
-
-.buy {
-  background-color: #4184f3;
-  color: #fff;
-  font-weight: 400;
-  font-size: 0.8rem;
-  border: 0.7px solid #4184f3;
-}
-
-.sell {
-  background-color: #ff5722;
-  color: #fff;
-  font-weight: 400;
-  font-size: 0.8rem;
-  border: 0.7px solid #ff5722;
-}
-
-.action {
-  background-color: #fff;
-  border: 0.7px solid #9b9b9b;
-}
-
-.icon {
-  transform: scale(0.7);
-  color: rgb(65, 65, 65);
-}
+/* Old button styles replaced with enhanced versions below */
 
 .watchlist-number {
   height: 6%;
@@ -838,9 +820,1256 @@ hr {
   cursor: pointer;
 }
 
+/* Improved .action:hover styling moved to professional improvements section */
+
+/* DASHBOARD THEME + RESPONSIVE STYLES - START (copilot-marker) */
+
+:root {
+  --page-bg: #ffffff;
+  --page-surface: #ffffff;
+  --page-surface-soft: #f5f6f7;
+  --page-text: #1f2937;
+  --page-muted: #6b7280;
+  --page-border: #e5e7eb;
+  --page-accent: #0d6efd;
+}
+
+body[data-theme='dark'] {
+  --page-bg: #0b1220;
+  --page-surface: #101a2f;
+  --page-surface-soft: #17233b;
+  --page-text: #f8fafc;
+  --page-muted: #b7c3d9;
+  --page-border: #263650;
+  --page-accent: #78b3ff;
+  background: var(--page-bg);
+  color: var(--page-text);
+}
+
+.theme-toggle-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  border: 1px solid var(--page-border);
+  background: var(--page-surface);
+  color: var(--page-text);
+  border-radius: 999px;
+  padding: 0.35rem 0.7rem;
+  line-height: 1;
+  margin-left: 12px;
+}
+
+.theme-toggle-btn:hover {
+  border-color: var(--page-accent);
+  color: var(--page-accent);
+}
+
+/* Map common UI elements to variables to make them theme-aware */
+.menu-container, .watchlist-container, .content, .topbar-container {
+  background: var(--page-surface);
+  color: var(--page-text);
+}
+
+.order-table td, .order-table th, .title, .menu, .profile .username {
+  color: var(--page-text);
+}
+
+.order-table td.profit { color: #48c237; }
+.order-table td.loss { color: #fa764e; }
+
+/* Responsive: stack sidebar and content on small screens and avoid overlap */
+@media (max-width: 900px) {
+  .dashboard-container {
+    flex-direction: column;
+    height: auto;
+  }
+
+  .watchlist-container {
+    width: 100%;
+    position: relative;
+    box-shadow: none;
+    order: 2;
+    max-height: 45vh;
+    overflow-y: auto;
+  }
+
+  .content {
+    width: 100%;
+    flex-basis: auto;
+    padding: 16px;
+    order: 3;
+  }
+
+  .menu-container {
+    width: 100%;
+    padding: 8px 12px;
+  }
+
+  /* ensure topbar remains visible on mobile */
+  .topbar-container {
+    position: sticky;
+    top: 0;
+    z-index: 999;
+    background: var(--page-surface);
+    backdrop-filter: blur(6px);
+  }
+
+  .watchlist-number {
+    position: static;
+    display: block;
+    width: 100%;
+    margin-top: 12px;
+    border: none;
+    background: transparent;
+  }
+
+  .menu .menus ul li {
+    display: inline-block;
+    margin-right: 12px;
+  }
+}
+
+/* DASHBOARD THEME + RESPONSIVE STYLES - END (copilot-marker) */
+
+/* PROFESSIONAL NAVBAR + SPACING FIX - START (copilot-marker) */
+
+/* Fix navbar container overflow and improve spacing */
+.menu-container {
+  flex: 1;
+  padding: 0.75rem 1.25rem;
+  gap: 1rem;
+  overflow: visible;
+}
+
+.menus {
+  display: flex;
+  flex: 1;
+  gap: 1rem;
+  align-items: center;
+}
+
+.menus ul {
+  display: flex;
+  gap: 1rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.menus li {
+  display: flex;
+  align-items: center;
+  margin: 0;
+  white-space: nowrap;
+}
+
+.menu {
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: var(--page-text);
+  transition: all 0.2s ease;
+  padding: 0.25rem 0.5rem;
+  border-radius: 4px;
+}
+
+.menu:hover {
+  color: var(--page-accent);
+  background: var(--page-surface-soft);
+}
+
+.menu.selected {
+  color: var(--page-accent);
+  font-weight: 600;
+}
+
+.profile {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  margin-left: auto;
+  flex-shrink: 0;
+}
+
+.profile .avatar {
+  width: 2.25rem;
+  height: 2.25rem;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--page-accent);
+  color: #fff;
+  flex-shrink: 0;
+  font-weight: 600;
+  font-size: 0.95rem;
+  letter-spacing: 0.5px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+  transition: all 0.2s ease;
+}
+
+.profile:hover .avatar {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
+}
+
+.profile .username {
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: var(--page-text);
+}
+
+/* Standard spacing: use rem instead of percentages */
+.row {
+  gap: 1.5rem;
+  margin: 1.5rem 0;
+}
+
+.col {
+  flex: 1;
+  min-width: 0;
+}
+
+.col h5 {
+  margin: 0 0 0.5rem 0;
+  font-weight: 500;
+  color: var(--page-text);
+}
+
+.col p {
+  margin: 0.5rem 0 0 0;
+  color: var(--page-muted);
+}
+
+.title {
+  margin: 0 0 1.5rem 0;
+  font-weight: 600;
+  color: var(--page-text);
+}
+
+.btn {
+  padding: 0.625rem 1.25rem;
+  border-radius: 4px;
+  border: none;
+  cursor: pointer;
+  font-weight: 500;
+  transition: all 0.2s ease;
+  white-space: nowrap;
+}
+
+.order-table {
+  margin-top: 1rem;
+}
+
+.order-table td,
+.order-table th {
+  padding: 1rem;
+  color: var(--page-text);
+}
+
+.order-table tr:hover {
+  background-color: var(--page-surface-soft);
+}
+
+/* Enhanced mobile responsiveness */
+@media (max-width: 1200px) {
+  .menu-container {
+    padding: 0.5rem 1rem;
+  }
+
+  .menus ul {
+    gap: 0.75rem;
+  }
+
+  .menu {
+    font-size: 0.8rem;
+  }
+}
+
+@media (max-width: 768px) {
+  .topbar-container {
+    flex-wrap: wrap;
+    height: auto;
+    gap: 0;
+  }
+
+  .indices-container {
+    width: 100%;
+    flex-basis: 100%;
+    border-right: none;
+    border-bottom: 1px solid var(--page-border);
+    padding: 0.75rem;
+  }
+
+  .menu-container {
+    width: 100%;
+    flex-basis: 100%;
+    padding: 0.5rem;
+    justify-content: space-between;
+  }
+
+  .menus {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    flex: 0 1 auto;
+    min-width: 0;
+  }
+
+  .menus ul {
+    gap: 0.5rem;
+  }
+
+  .menu {
+    font-size: 0.75rem;
+    padding: 0.25rem 0.375rem;
+  }
+
+  .profile {
+    margin-left: 0.5rem;
+  }
+
+  .profile .username {
+    display: none;
+  }
+
+  .content {
+    padding: 1rem;
+  }
+
+  .title {
+    font-size: 1.1rem;
+    margin-bottom: 1rem;
+  }
+
+  .order-table td,
+  .order-table th {
+    padding: 0.75rem 0.5rem;
+    font-size: 0.8rem;
+  }
+
+  .row {
+    gap: 1rem;
+    margin: 1rem 0;
+  }
+}
+
+@media (max-width: 480px) {
+  .topbar-container {
+    padding: 0;
+  }
+
+  .indices-container {
+    padding: 0.5rem;
+    gap: 0.5rem;
+  }
+
+  .nifty,
+  .sensex {
+    gap: 0.25rem;
+  }
+
+  .index,
+  .index-points,
+  .percent {
+    font-size: 0.7rem;
+  }
+
+  .menu-container {
+    padding: 0.25rem 0.5rem;
+  }
+
+  .menus ul {
+    gap: 0.25rem;
+  }
+
+  .menu {
+    font-size: 0.65rem;
+    padding: 0.2rem 0.3rem;
+  }
+
+  .theme-toggle-btn {
+    padding: 0.25rem 0.5rem;
+    gap: 4px;
+    font-size: 0.65rem;
+  }
+
+  .theme-toggle-btn span {
+    display: none;
+  }
+
+  .profile .avatar {
+    width: 2rem;
+    height: 2rem;
+    font-size: 0.65rem;
+  }
+
+  .watchlist-container {
+    max-height: 35vh;
+  }
+
+  .content {
+    padding: 0.75rem;
+  }
+
+  .title {
+    font-size: 0.95rem;
+  }
+
+  .order-table {
+    font-size: 0.7rem;
+  }
+
+  .order-table td,
+  .order-table th {
+    padding: 0.5rem 0.25rem;
+  }
+
+  .col h5 {
+    font-size: 1.05rem;
+  }
+
+  .row {
+    flex-direction: column;
+    gap: 0.75rem;
+    margin: 0.75rem 0;
+  }
+
+  .col {
+    width: 100%;
+  }
+}
+
+/* PROFESSIONAL NAVBAR + SPACING FIX - END (copilot-marker) */
+
+/* NIFTY + WATCHLIST ACTIONS + FUNDS UI IMPROVEMENTS - START (copilot-marker) */
+
+/* Fix Nifty visibility on full screen layout */
+.nifty {
+  z-index: 1;
+  flex-basis: 45%;
+  transition: all 0.3s ease;
+}
+
+.nifty:hover {
+  background: var(--page-surface-soft);
+  padding: 0.5rem 0.75rem;
+  border-radius: 6px;
+}
+
+.sensex {
+  flex-basis: 45%;
+  transition: all 0.3s ease;
+}
+
+.sensex:hover {
+  background: var(--page-surface-soft);
+  padding: 0.5rem 0.75rem;
+  border-radius: 6px;
+}
+
+/* Enhanced WatchListActions styling */
+.actions span {
+  display: flex;
+  gap: 0.5rem;
+  align-items: center;
+  justify-content: flex-end;
+  padding-right: 0.75rem;
+}
+
+.actions span button {
+  width: 40px;
+  height: 32px;
+  border-radius: 6px;
+  text-align: center;
+  cursor: pointer;
+  font-weight: 500;
+  transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.08);
+}
+
+.actions span button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.actions span button:active {
+  transform: translateY(0);
+}
+
+.buy {
+  background: linear-gradient(135deg, #4184f3 0%, #5a95ff 100%);
+  color: #fff;
+  font-weight: 500;
+  font-size: 0.75rem;
+  border: none;
+}
+
+.buy:hover {
+  background: linear-gradient(135deg, #3575e5 0%, #4a85f0 100%);
+}
+
+.sell {
+  background: linear-gradient(135deg, #ff5722 0%, #ff7043 100%);
+  color: #fff;
+  font-weight: 500;
+  font-size: 0.75rem;
+  border: none;
+}
+
+.sell:hover {
+  background: linear-gradient(135deg, #e64a19 0%, #f0632c 100%);
+}
+
+.action {
+  background: var(--page-surface);
+  border: 1.5px solid var(--page-border);
+  color: var(--page-muted);
+  transition: all 0.25s ease;
+}
+
 .action:hover {
-  background-color: rgb(212, 212, 212);
+  background: var(--page-accent);
+  border-color: var(--page-accent);
+  color: #fff;
+}
+
+.icon {
+  transform: scale(0.8);
+  transition: transform 0.25s ease;
+}
+
+.action:hover .icon {
+  transform: scale(0.95);
+}
+
+/* Improved Watchlist item styling */
+.list li {
+  border-bottom: 1px solid var(--page-border);
+  padding: 0.875rem 0.75rem;
+  position: relative;
+  transition: all 0.2s ease;
+  cursor: pointer;
+}
+
+.list li:hover {
+  background: var(--page-surface-soft);
+  border-left: 3px solid var(--page-accent);
+  padding-left: 0.875rem;
+  margin-left: 0;
+}
+
+.list li:hover > .actions {
+  display: flex;
+  animation: slideInRight 0.2s ease-out;
+}
+
+@keyframes slideInRight {
+  from {
+    opacity: 0;
+    transform: translateX(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+/* Enhanced Funds section styling */
+.funds {
+  width: 100%;
+  padding: 1.5rem;
+  background: linear-gradient(135deg, var(--page-accent) 0%, #5a95ff 100%);
+  border-radius: 12px;
+  text-align: right;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1.5rem;
+  margin-bottom: 2rem;
+  box-shadow: 0 4px 20px rgba(13, 110, 253, 0.2);
+  box-sizing: border-box;
+}
+
+.funds p {
+  font-size: 0.95rem;
+  color: rgba(255, 255, 255, 0.9);
+  margin: 0;
+  font-weight: 500;
+}
+
+.funds .btn {
+  margin: 0;
+  padding: 0.75rem 1.5rem;
+  font-size: 0.875rem;
+  font-weight: 600;
+  border: 2px solid rgba(255, 255, 255, 0.3);
+  background: rgba(255, 255, 255, 0.15);
+  color: #fff;
+  backdrop-filter: blur(10px);
+  transition: all 0.3s ease;
+}
+
+.funds .btn:hover {
+  background: rgba(255, 255, 255, 0.25);
+  border-color: rgba(255, 255, 255, 0.5);
+  transform: translateY(-2px);
+}
+
+/* Improved Dashboard rows and columns */
+.row {
+  display: flex;
+  gap: 1.5rem;
+  margin: 1.5rem 0;
+  flex-wrap: wrap;
+}
+
+.col {
+  flex: 1;
+  min-width: 250px;
+  padding: 0;
+}
+
+.col span {
+  display: flex;
+  align-items: center;
+  margin-bottom: 1rem;
+  gap: 0.75rem;
+}
+
+.col span p {
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: var(--page-text);
+  margin: 0;
+}
+
+/* Enhanced table styling */
+.table {
+  border: 1px solid var(--page-border);
+  border-radius: 10px;
+  padding: 1.75rem 1.5rem;
+  background: var(--page-surface);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+  transition: all 0.3s ease;
+}
+
+.table:hover {
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
+}
+
+/* Equity section specific improvements */
+.col .table:first-of-type {
+  padding: 2rem 1.75rem;
+  padding: 1rem 1.25rem;
+}
+
+.table .data {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1rem 0;
+  padding: 0.5rem 0.5rem;
+  transition: all 0.2s ease;
+  border-radius: 6px;
+  padding-left: 0.5rem;
+  padding-right: 0.5rem;
+  margin-bottom: 1rem;
+}
+
+.table .data:last-child {
+  margin-bottom: 0;
+}
+
+.table .data:hover {
+  background: var(--page-surface-soft);
+  padding-left: 1rem;
+}
+
+.table .data p {
+  margin: 0.75rem 0;
+}
+
+.table .data p:first-child {
+  font-size: 0.95rem;
+  color: var(--page-muted);
+  font-weight: 500;
+}
+
+.imp {
+  font-size: 1.4rem;
+  color: var(--page-text);
+  font-weight: 600;
+}
+
+.colored {
+  color: var(--page-accent);
+  background: var(--page-surface-soft);
+  padding: 0.25rem 0.5rem;
+  border-radius: 4px;
+}
+
+.table hr {
+  border: none;
+  background: var(--page-border);
+  height: 1px;
+  margin: 1rem 0;
+}
+
+/* Enhanced commodity section */
+.commodity {
+  padding: 2rem 1.5rem;
+  text-align: center;
+  border: 2px dashed var(--page-border);
+  border-radius: 8px;
+  background: var(--page-surface-soft);
+  transition: all 0.3s ease;
+  cursor: pointer;
+}
+
+.commodity:hover {
+  border-color: var(--page-accent);
+  background: var(--page-surface);
+  box-shadow: 0 4px 12px rgba(13, 110, 253, 0.1);
+}
+
+.commodity p {
+  margin-bottom: 1rem;
+  color: var(--page-muted);
+  font-size: 0.95rem;
+}
+
+/* Improved button styling */
+.btn-green {
+  background: linear-gradient(135deg, #4caf50 0%, #66bb6a 100%);
+}
+
+.btn-green:hover {
+  background: linear-gradient(135deg, #45a049 0%, #5cb85c 100%);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(76, 175, 80, 0.2);
+}
+
+.btn-blue {
+  background: linear-gradient(135deg, #4184f3 0%, #5a95ff 100%);
+}
+
+.btn-blue:hover {
+  background: linear-gradient(135deg, #3575e5 0%, #4a85f0 100%);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(65, 132, 243, 0.2);
+}
+
+/* Enhanced title styling */
+.title {
+  font-size: 1.4rem;
+  font-weight: 600;
+  color: var(--page-text);
+  margin-bottom: 1.5rem;
+  padding-bottom: 0.75rem;
+  border-bottom: 2px solid var(--page-border);
+}
+
+/* Impressive Summary Dashboard Styling - START (copilot-marker) */
+.username {
+  margin-bottom: 2rem;
+}
+
+.username h6 {
+  font-size: 1.8rem;
+  font-weight: 600;
+  color: var(--page-text);
+  margin: 0 0 1rem 0;
+}
+
+.divider {
+  border: none;
+  background: linear-gradient(to right, var(--page-border), transparent);
+  height: 1px;
+  margin: 1.5rem 0;
+}
+
+.section {
+  margin-bottom: 2.5rem;
+  padding-bottom: 2rem;
+  border-bottom: 1px solid var(--page-border);
+}
+
+.section:last-child {
+  border-bottom: none;
+  margin-bottom: 0;
+  padding-bottom: 0;
+}
+
+.section span {
+  display: flex;
+  align-items: center;
+  margin-bottom: 1.5rem;
+}
+
+.section span p {
+  font-size: 1.35rem;
+  font-weight: 600;
+  color: var(--page-text);
+  margin: 0;
+  letter-spacing: -0.5px;
+}
+
+.section-icon {
+  transform: scale(0.9);
+  color: var(--page-accent);
+  margin-right: 0.75rem;
+  flex-shrink: 0;
+}
+
+.data {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 2rem;
+  padding: 1.5rem;
+  background: var(--page-surface);
+  border-radius: 10px;
+  border: 1px solid var(--page-border);
+  transition: all 0.3s ease;
+}
+
+.data:hover {
+  background: var(--page-surface-soft);
+  border-color: var(--page-accent);
+  box-shadow: 0 4px 16px rgba(13, 110, 253, 0.1);
+}
+
+.data .first {
+  min-width: 180px;
+}
+
+.data .first h3 {
+  font-size: 2.2rem;
+  font-weight: 700;
+  color: var(--page-text);
+  margin: 0 0 0.5rem 0;
+  line-height: 1;
+}
+
+.data .first h3 small {
+  font-size: 0.65rem;
+  font-weight: 600;
+  color: var(--page-accent);
+  margin-left: 0.5rem;
+  display: inline-block;
+  margin-top: 0.3rem;
+}
+
+.data .first p {
+  font-size: 0.9rem;
+  color: var(--page-muted);
+  margin: 0.5rem 0 0 0;
+  font-weight: 500;
+}
+
+.data .first .profit {
+  background: linear-gradient(135deg, #4caf50, #66bb6a);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.data hr {
+  border: none;
+  border-left: 2px solid var(--page-border);
+  height: 80px;
+  margin: 0 1rem;
+}
+
+.data .second {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.data .second p {
+  font-size: 0.95rem;
+  color: var(--page-muted);
+  margin: 0;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1rem;
+}
+
+.data .second p span {
+  font-size: 1.3rem;
+  font-weight: 700;
+  color: var(--page-text);
+}
+
+/* Impressive Summary Dashboard Styling - END (copilot-marker) */
+
+/* Enhanced content area */
+.content {
+  padding: 1.5rem;
+  background: var(--page-bg);
+  border-radius: 8px;
+  transition: background 0.3s ease;
+}
+
+/* Search styling improvements */
+.search {
+  background: var(--page-surface);
+  border: 1px solid var(--page-border);
+  color: var(--page-text);
+  transition: all 0.3s ease;
+}
+
+.search:focus {
+  outline: none;
+  border-color: var(--page-accent);
+  box-shadow: 0 0 0 3px rgba(13, 110, 253, 0.1);
+  background: var(--page-surface);
+}
+
+/* Dashboard index hover effects */
+.index:hover {
+  color: var(--page-accent);
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+/* Responsive improvements for funds section */
+@media (max-width: 768px) {
+  .funds {
+    flex-direction: column;
+    text-align: center;
+    justify-content: center;
+    padding: 1.25rem;
+    gap: 1rem;
+  }
+
+  .funds p {
+    font-size: 0.85rem;
+  }
+
+  .funds .btn {
+    padding: 0.6rem 1.2rem;
+    font-size: 0.8rem;
+    margin-right: 0 !important;
+    margin-left: 0 !important;
+  }
+
+  .row {
+    flex-direction: column;
+    gap: 1rem;
+  }
+
+  .col {
+    width: 100%;
+  }
+
+  .table {
+    padding: 1.5rem;
+  }
+
+  .table .data {
+    padding: 0.85rem 0.5rem;
+  }
+
+  .actions {
+    right: 3rem;
+  }
+
+  .actions span button {
+    width: 36px;
+    height: 28px;
+    font-size: 0.7rem;
+  }
+
+  .data {
+    flex-direction: column;
+    gap: 1.5rem;
+  }
+
+  .data .first {
+    min-width: auto;
+    width: 100%;
+  }
+
+  .data hr {
+    border-left: none;
+    border-top: 1px solid var(--page-border);
+    height: auto;
+    width: 100%;
+    margin: 0.5rem 0;
+  }
+
+  .data .second {
+    width: 100%;
+  }
+
+  .username h6 {
+    font-size: 1.5rem;
+  }
+
+  .section span p {
+    font-size: 1.15rem;
+  }
+
+  .data .first h3 {
+    font-size: 1.8rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .funds {
+    padding: 1rem;
+    margin-bottom: 1.5rem;
+  }
+
+  .funds p {
+    font-size: 0.8rem;
+  }
+
+  .table {
+    padding: 1.25rem 1rem;
+  }
+
+  .table .data {
+    padding: 0.75rem 0.25rem;
+  }
+
+  .actions {
+    right: 2.5rem;
+  }
+
+  .actions span button {
+    width: 32px;
+    height: 26px;
+    font-size: 0.65rem;
+  }
+
+  .imp {
+    font-size: 1.2rem;
+  }
+
+  .col span p {
+    font-size: 1.1rem;
+  }
+
+  .data {
+    padding: 1rem;
+  }
+
+  .data .first h3 {
+    font-size: 1.6rem;
+  }
+
+  .data .second p {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.25rem;
+  }
+
+  .data .second p span {
+    font-size: 1.1rem;
+  }
+
+  .username h6 {
+    font-size: 1.3rem;
+  }
+
+  .section span p {
+    font-size: 1rem;
+  }
+}
+
+/* NIFTY + WATCHLIST ACTIONS + FUNDS UI IMPROVEMENTS - END (copilot-marker) */
+
+/* PROFILE DROPDOWN STYLES */
+.profile {
+  position: relative;
+}
+
+.profile-dropdown {
+  position: absolute;
+  top: 100%;
+  right: 0;
+  margin-top: 0.5rem;
+  background: var(--page-surface);
+  border: 1px solid var(--page-border);
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  display: flex;
+  flex-direction: column;
+  min-width: 150px;
+  z-index: 9999;
+  overflow: hidden;
+}
+
+.profile-dropdown a {
+  padding: 0.75rem 1rem;
+  color: var(--page-text);
+  text-decoration: none;
+  font-size: 0.9rem;
+  font-weight: 500;
+  transition: background 0.2s;
+  text-align: left;
+}
+
+.profile-dropdown a:hover {
+  background: var(--page-surface-soft);
+  color: var(--page-accent);
+}
+
+.profile-dropdown hr {
+  margin: 0;
+  border: none;
+  border-bottom: 1px solid var(--page-border);
+  height: 0;
+  width: 100%;
+}
+
+/* GLOBAL UI/UX POLISH - START */
+
+/* 1. Custom Modern Scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  background: var(--page-border);
+  border-radius: 10px;
+  border: 2px solid var(--page-bg);
+}
+::-webkit-scrollbar-thumb:hover {
+  background: var(--page-muted);
+}
+
+/* 2. Accessibility Focus Rings */
+button:focus-visible, 
+input:focus-visible, 
+a:focus-visible {
+  outline: 2px solid var(--page-accent);
+  outline-offset: 2px;
+}
+
+/* 3. Enhanced Card/Table Hover States */
+.table {
+  transition: transform 0.25s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.25s ease;
+}
+.table:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 12px 24px rgba(0, 0, 0, 0.08);
+}
+body[data-theme='dark'] .table:hover {
+  box-shadow: 0 12px 24px rgba(0, 0, 0, 0.4);
+}
+
+/* 4. Improved Empty States (.no-orders) */
+.no-orders {
+  padding: 4rem 2rem;
+  background: var(--page-surface-soft);
+  border: 2px dashed var(--page-border);
+  border-radius: 12px;
+  margin: 2rem 0;
+  transition: all 0.3s ease;
+}
+.no-orders:hover {
+  border-color: var(--page-accent);
+  background: var(--page-surface);
+}
+.no-orders .icon {
+  color: var(--page-muted);
+  transition: color 0.3s ease;
+}
+.no-orders:hover .icon {
+  color: var(--page-accent);
+}
+.no-orders p {
+  color: var(--page-text);
+  font-weight: 500;
+}
+
+/* 5. Global Content Entrance Animation */
+.content {
+  animation: contentFadeIn 0.4s ease-out forwards;
+}
+@keyframes contentFadeIn {
+  from { opacity: 0; transform: translateY(15px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* GLOBAL UI/UX POLISH - END */
+
+/* --- FUNDS ACTION MODAL STYLING --- */
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 10000;
+  backdrop-filter: blur(4px);
+}
+
+.modal-content {
+  background: var(--page-surface);
+  padding: 2rem;
+  border-radius: 12px;
+  width: 90%;
+  max-width: 420px;
+  border: 1px solid var(--page-border);
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+}
+
+.modal-content h3 {
+  margin-top: 0;
+  margin-bottom: 1.5rem;
+  color: var(--page-text);
+}
+
+.modal-content .bank-info {
+  font-size: 0.9rem;
+  color: var(--page-muted);
+  background: var(--page-surface-soft);
+  padding: 1rem;
+  border-radius: 6px;
+  margin-bottom: 1.5rem;
+  border: 1px solid var(--page-border);
+}
+
+.modal-content .error-msg {
+  color: #fa764e;
+  font-size: 0.85rem;
+  margin-bottom: 1rem;
+}
+
+.modal-actions {
+  display: flex;
+  gap: 1rem;
+  justify-content: flex-end;
+  margin-top: 1rem;
+}
+
+.buy-window-footer {
+  background-color: transparent !important;
+  color: var(--page-text) !important;
+  outline: none !important;
 }
 
 
 
+.form-input:focus,
+.form-input:active {
+  background: var(--page-bg) !important;
+  color: var(--page-text) !important;
+  border-color: var(--page-accent) !important;
+  outline: none !important;
+  box-shadow: 0 0 0 2px rgba(13, 110, 253, 0.2) !important;
+}
