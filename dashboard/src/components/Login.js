@@ -1,11 +1,13 @@
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import axios from "axios";
+import Toast from "./Toast";
 import "./Auth.css";
 
 const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [toast, setToast] = useState({ message: "", type: "success" });
 
   useEffect(() => {
     document.body.dataset.theme = 'dark';
@@ -17,14 +19,18 @@ const Login = () => {
       const res = await axios.post("http://localhost:3002/login", { email, password });
       localStorage.setItem("token", res.data.token);
       localStorage.setItem("username", res.data.name);
-      window.location.href = "/"; // Force full reload to update auth state
+      setToast({ message: `Welcome back, ${res.data.name}!`, type: "success" });
+      setTimeout(() => {
+        window.location.href = "/";
+      }, 1000);
     } catch (error) {
-      alert("Login failed: " + (error.response?.data?.message || "Invalid Credentials"));
+      setToast({ message: error.response?.data?.message || "Invalid Credentials", type: "error" });
     }
   };
 
   return (
     <div className="auth-container">
+      <Toast message={toast.message} type={toast.type} onClose={() => setToast({ message: "", type: "success" })} />
       <div className="auth-left">
         <img src="logo.png" alt="TradeX Logo" style={{ width: "120px", marginBottom: "2rem" }} />
         <h1>Welcome Back</h1>
