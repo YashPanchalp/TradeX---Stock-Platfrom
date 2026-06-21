@@ -12,7 +12,7 @@ function Hero() {
                 style={{margin: "0 auto", color:"white"
                 }}>Signup Now</Link>
             </div>
-        </div>
+        </div>  
      );
 }
 
