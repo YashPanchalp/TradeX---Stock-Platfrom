@@ -3,6 +3,7 @@ import React, { useState, useContext } from "react";
 import axios from "axios";
 
 import GeneralContext from "./GeneralContext";
+import Toast from "./Toast";
 
 import "./BuyActionWindow.css";
 
@@ -64,25 +65,7 @@ const BuyActionWindow = ({ uid, currentPrice = 0, actionType = "BUY", initialQty
 
   return (
     <div className="buy-window-wrapper">
-      {toast.message && (
-        <div style={{
-          position: 'absolute',
-          top: '20px',
-          left: '50%',
-          transform: 'translateX(-50%)',
-          background: toast.type === 'success' ? '#48c237' : '#fa764e',
-          color: '#fff',
-          padding: '12px 24px',
-          borderRadius: '8px',
-          zIndex: 9999,
-          boxShadow: '0 4px 15px rgba(0,0,0,0.2)',
-          fontWeight: '500',
-          fontSize: '1rem',
-          animation: 'contentFadeIn 0.3s ease-out'
-        }}>
-          {toast.message}
-        </div>
-      )}
+      <Toast message={toast.message} type={toast.type} onClose={() => setToast({ message: "", type: "" })} />
       <div className="buy-window-container">
         {/* Header */}
         <div className="buy-window-header">

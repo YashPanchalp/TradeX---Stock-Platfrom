@@ -265,6 +265,24 @@ app.get('/funds', authenticateToken, async(req, res) => {
   res.json({ balance: funds.balance, bankAccount: user ? user.bankAccount : 'Not Available' });
 });
 
+// API ENDPOINT TO GET USER PROFILE
+app.get('/user/profile', authenticateToken, async (req, res) => {
+  try {
+    const user = await UserModel.findById(req.user.id).select('-password');
+    if (!user) return res.status(404).json({ message: "User not found" });
+    const funds = await FundsModel.findOne({ user: req.user.id });
+    res.json({
+      name: user.name,
+      email: user.email,
+      bankAccount: user.bankAccount,
+      balance: funds ? funds.balance : 0,
+      createdAt: user.createdAt,
+    });
+  } catch (error) {
+    res.status(500).json({ message: "Error fetching profile", error });
+  }
+});
+
 // API ENDPOINT TO UPDATE FUNDS (ADD/WITHDRAW)
 app.post('/funds/update', authenticateToken, async(req, res) => {
   const { amount, action } = req.body;

@@ -1,5 +1,4 @@
 import React, { useState, useContext, useEffect } from "react";
-import axios from "axios";
 import GeneralContext from "./GeneralContext";
 import { Tooltip, Grow } from "@mui/material";
 
@@ -44,8 +43,8 @@ const WatchList = () => {
     const tick = () => {
       setWatchlist((prevWatchlist) =>
         prevWatchlist.map((stock) => {
-          // Random change between -0.10% and +0.10%
-          const changePercent = (Math.random() * 2 - 1) / 1000;
+          // Random change between -0.20% and +0.20%
+          const changePercent = (Math.random() * 2 - 1) / 500;
           const newPrice = stock.price * (1 + changePercent);
           const diff = newPrice - stock.price;
           
@@ -152,7 +151,7 @@ const LiveChart = ({ stock, onClose }) => {
     let currentPrice = stock.price;
     for (let i = 20; i >= 0; i--) {
        history.push(currentPrice);
-       const changePercent = (Math.random() * 2 - 1) / 1000;
+       const changePercent = (Math.random() * 2 - 1) / 500;
        currentPrice = currentPrice / (1 + changePercent);
     }
     return history.reverse();

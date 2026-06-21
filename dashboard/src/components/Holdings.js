@@ -101,7 +101,6 @@ const Holdings = () => {
             const curValue = stock.price * stock.qty;
             const isProfit = curValue - stock.avg * stock.qty >= 0;
             const profClass = isProfit ? "profit" : "loss";
-            const dayClass = stock.isLoss ? "loss" : "profit";
             const pctChangeValue = ((stock.price - stock.avg) / stock.avg) * 100;
             const isDown = pctChangeValue < 0;
             const percent = Math.abs(pctChangeValue).toFixed(2) + "%";

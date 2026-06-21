@@ -2,13 +2,13 @@ import React, { useEffect } from 'react';
 import Navbar from '../Navbar';
 import Footer from '../Footer';
 
-function Signup() {
-    const dashboardSignupUrl = "http://localhost:3000/signup";
+function Login() {
+    const dashboardLoginUrl = "http://localhost:3000/login";
 
     useEffect(() => {
-        const targetUrl = new URL(dashboardSignupUrl);
+        const targetUrl = new URL(dashboardLoginUrl);
         if (window.location.origin !== targetUrl.origin) {
-            window.location.replace(dashboardSignupUrl);
+            window.location.replace(dashboardLoginUrl);
         }
     }, []);
 
@@ -37,7 +37,7 @@ function Signup() {
                     width: "64px",
                     height: "64px",
                     borderRadius: "50%",
-                    background: "linear-gradient(135deg, #43e97b, #38f9d7)",
+                    background: "linear-gradient(135deg, var(--page-accent), #5a95ff)",
                     display: "flex",
                     alignItems: "center",
                     justifyContent: "center",
@@ -45,30 +45,30 @@ function Signup() {
                     fontSize: "1.8rem",
                     color: "#fff"
                 }}>
-                    <i className="fa fa-user-plus" aria-hidden="true"></i>
+                    <i className="fa fa-sign-in" aria-hidden="true"></i>
                 </div>
-                <h2 style={{ margin: "0 0 0.5rem", color: "var(--page-text)", fontWeight: 700 }}>Redirecting to Signup</h2>
+                <h2 style={{ margin: "0 0 0.5rem", color: "var(--page-text)", fontWeight: 700 }}>Redirecting to Login</h2>
                 <p style={{ color: "var(--page-muted)", marginBottom: "2rem", lineHeight: 1.6 }}>
-                    Taking you to the secure TradeX account creation page.
+                    Taking you to the secure TradeX dashboard login page.
                 </p>
                 <div style={{
                     width: "40px",
                     height: "40px",
                     border: "3px solid var(--page-border)",
-                    borderTopColor: "#43e97b",
+                    borderTopColor: "var(--page-accent)",
                     borderRadius: "50%",
                     animation: "spinner 0.8s linear infinite",
                     margin: "0 auto 1.5rem"
                 }}></div>
                 <a 
-                    href={dashboardSignupUrl}
+                    href={dashboardLoginUrl}
                     style={{
                         display: "inline-block",
                         padding: "0.75rem 2rem",
-                        background: "linear-gradient(135deg, #43e97b, #38f9d7)",
-                        color: "#0b1220",
+                        background: "linear-gradient(135deg, var(--page-accent), #5a95ff)",
+                        color: "#fff",
                         borderRadius: "10px",
-                        fontWeight: 700,
+                        fontWeight: 600,
                         textDecoration: "none",
                         transition: "all 0.2s ease"
                     }}
@@ -87,4 +87,4 @@ function Signup() {
      );
 }
 
-export default Signup;
+export default Login;

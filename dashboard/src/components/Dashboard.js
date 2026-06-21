@@ -29,10 +29,15 @@ const Dashboard = () => {
               <Route path="/apps" element={<Apps />} />
             </Routes>
           ) : (
-            <div style={{ textAlign: "center", padding: "5rem", marginTop: "10%" }}>
-              <h2>Please Login to View Your Dashboard</h2>
-              <p style={{ color: "gray", marginTop: "10px" }}>Only the live market WatchList is visible to guests.</p>
-              <Link to="/login" className="btn btn-primary" style={{ display: "inline-block", marginTop: "20px", textDecoration: "none" }}>Login Now</Link>
+            <div className="guest-view">
+              <div className="guest-card">
+                <div className="guest-icon">
+                  <i className="fa fa-lock" aria-hidden="true"></i>
+                </div>
+                <h2 className="guest-title">Please Login to View Your Dashboard</h2>
+                <p className="guest-desc">Only the live market WatchList is visible to guests.</p>
+                <Link to="/login" className="btn btn-guest">Login Now</Link>
+              </div>
             </div>
           )}
         </div>
