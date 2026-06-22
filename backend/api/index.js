@@ -16,35 +16,6 @@ const PORT = process.env.PORT || 3002;
 const url = process.env.MONGO_URL;
 //------------------------------------------//
 
-app.use(
-  cors({
-    origin: [
-      "https://trade-x-stock-platfrom-ay8v.vercel.app",
-      "http://localhost:3000"
-    ],
-    methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
-    credentials: true,
-    allowedHeaders: ["Content-Type", "Authorization"]
-  })
-);
-app.use((req, res, next) => {
-  res.header(
-    "Access-Control-Allow-Origin",
-    "https://trade-x-stock-platfrom-ay8v.vercel.app"
-  );
-
-  res.header(
-    "Access-Control-Allow-Headers",
-    "Origin, X-Requested-With, Content-Type, Accept, Authorization"
-  );
-
-  res.header(
-    "Access-Control-Allow-Methods",
-    "GET,POST,PUT,DELETE,OPTIONS"
-  );
-
-  next();
-});
 app.use(bodyParser.json());
 
 
@@ -320,6 +291,32 @@ app.get("/", (req, res) => {
     message: "TradeX Backend Running",
   });
 });
+
+app.use((req, res, next) => {
+  res.header(
+    "Access-Control-Allow-Origin",
+    "https://trade-x-stock-platfrom-ay8v.vercel.app"
+  );
+  res.header(
+    "Access-Control-Allow-Headers",
+    "Origin, X-Requested-With, Content-Type, Accept, Authorization"
+  );
+  res.header(
+    "Access-Control-Allow-Methods",
+    "GET, POST, PUT, DELETE, OPTIONS"
+  );
+
+  if (req.method === "OPTIONS") {
+    return res.sendStatus(200);
+  }
+
+  next();
+});
+
+app.use(cors({
+  origin: "https://trade-x-stock-platfrom-ay8v.vercel.app",
+  credentials: true
+}));
 
 // Export app for Vercel
 module.exports = app;
