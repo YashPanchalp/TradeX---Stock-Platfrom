@@ -8,7 +8,6 @@ const { FundsModel } = require("../model/FundsModel");
 const { UserModel } = require("../model/UserModel");
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcryptjs");
-const app = express();
 const mongoose = require("mongoose");
 const bodyParser = require('body-parser');
 const cors = require('cors');
@@ -17,30 +16,15 @@ const PORT = process.env.PORT || 3002;
 const url = process.env.MONGO_URL;
 //------------------------------------------//
 
+const app = express();
 app.use(cors({
-  origin: true,
+  origin: [
+    "http://localhost:3000",
+    "https://trade-x-stock-platfrom.vercel.app",
+    "https://trade-x-stock-platfr-git-f39ba2-yash-panchals-projects-410364e1.vercel.app"
+  ],
   credentials: true
 }));
-app.use((req, res, next) => {
-  res.header(
-    "Access-Control-Allow-Origin",
-    "https://trade-x-stock-platfrom-ay8v.vercel.app"
-  );
-  res.header(
-    "Access-Control-Allow-Headers",
-    "Origin, X-Requested-With, Content-Type, Accept, Authorization"
-  );
-  res.header(
-    "Access-Control-Allow-Methods",
-    "GET, POST, PUT, DELETE, OPTIONS"
-  );
-
-  if (req.method === "OPTIONS") {
-    return res.sendStatus(200);
-  }
-
-  next();
-});
 app.use(bodyParser.json());
 
 
