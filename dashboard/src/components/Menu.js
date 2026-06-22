@@ -16,7 +16,7 @@ const Menu = () => {
   // Fetch user profile when token is available
   useEffect(() => {
     if (token) {
-      axios.get("http://localhost:3002/user/profile", {
+      axios.get(`${process.env.REACT_APP_API_URL}/user/profile`, {
         headers: { Authorization: `Bearer ${token}` }
       })
       .then(res => setProfile(res.data))

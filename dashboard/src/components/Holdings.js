@@ -11,7 +11,7 @@ const Holdings = () => {
 
   useEffect(() => {
     const token = localStorage.getItem("token");
-    axios.get("http://localhost:3002/allHoldings", {
+    axios.get(`${process.env.REACT_APP_API_URL}/allHoldings`, {
       headers: { Authorization: `Bearer ${token}` }
     }).then((res) => {
       // console.log(res.data);

@@ -1,7 +1,5 @@
 import React, { useState, useContext } from "react";
-
 import axios from "axios";
-
 import GeneralContext from "./GeneralContext";
 import Toast from "./Toast";
 
@@ -33,7 +31,7 @@ const BuyActionWindow = ({ uid, currentPrice = 0, actionType = "BUY", initialQty
     setIsLoading(true);
     const token = localStorage.getItem("token");
     try {
-      await axios.post("http://localhost:3002/newOrder", {
+      await axios.post(`${process.env.REACT_APP_API_URL}/newOrder`, {
         name: uid,
         qty: stockQuantity,
         price: stockPrice,

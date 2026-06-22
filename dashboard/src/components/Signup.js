@@ -26,7 +26,7 @@ const Signup = () => {
   const handleSignup = async (e) => {
     e.preventDefault();
     try {
-      const res = await axios.post("http://localhost:3002/signup", {
+      const res = await axios.post(`${process.env.REACT_APP_API_URL}/signup`, {
         name, email, password, bankAccount: bank
       });
       localStorage.setItem("token", res.data.token);

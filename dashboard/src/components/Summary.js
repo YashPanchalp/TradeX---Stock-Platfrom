@@ -11,13 +11,13 @@ const Summary = () => {
 
   useEffect(() => {
     const token = localStorage.getItem("token");
-    axios.get("http://localhost:3002/funds", {
+    axios.get(`${process.env.REACT_APP_API_URL}/funds`, {
       headers: { Authorization: `Bearer ${token}` }
     })
     .then(res => setBalance(res.data.balance))
     .catch(err => console.warn(err));
 
-    axios.get("http://localhost:3002/allHoldings", {
+    axios.get(`${process.env.REACT_APP_API_URL}/allHoldings`, {
       headers: { Authorization: `Bearer ${token}` }
     })
     .then(res => setHoldings(res.data))

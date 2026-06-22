@@ -21,13 +21,13 @@ const Funds = () => {
   const fetchFunds = async () => {
     try {
       const token = localStorage.getItem("token");
-      const res = await axios.get("http://localhost:3002/funds", {
+      const res = await axios.get(`${process.env.REACT_APP_API_URL}/funds`, {
         headers: { Authorization: `Bearer ${token}` }
       });
       setBalance(res.data.balance);
       setBankAccount(res.data.bankAccount);
 
-      const holdingsRes = await axios.get("http://localhost:3002/allHoldings", {
+      const holdingsRes = await axios.get(`${process.env.REACT_APP_API_URL}/allHoldings`, {
         headers: { Authorization: `Bearer ${token}` }
       });
       let totalUsed = 0;
@@ -62,7 +62,7 @@ const Funds = () => {
 
     try {
       const token = localStorage.getItem("token");
-      const res = await axios.post("http://localhost:3002/funds/update", {
+      const res = await axios.post(`${process.env.REACT_APP_API_URL}/funds/update`, {
         amount: numAmount,
         action: modalType
       }, {
