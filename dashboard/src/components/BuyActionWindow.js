@@ -8,7 +8,7 @@ import "./BuyActionWindow.css";
 const BuyActionWindow = ({ uid, currentPrice = 0, actionType = "BUY", initialQty = 1, isDown = false, percent = "0.00%" }) => {
   const context = useContext(GeneralContext);
   const [stockQuantity, setStockQuantity] = useState(initialQty);
-  const [stockPrice, setStockPrice] = useState(currentPrice || 0);
+  const [stockPrice] = useState(currentPrice || 0);
   const isSellMode = actionType === "SELL";
   const primaryActionLabel = isSellMode ? "SELL" : "BUY";
   const primaryActionClass = isSellMode ? "btn-secondary" : "btn-primary";
