@@ -21,7 +21,7 @@ app.use(cors({
   origin: [
     "http://localhost:3000",
     "https://trade-x-stock-platfrom.vercel.app",
-    "https://trade-x-stock-platfr-git-f39ba2-yash-panchals-projects-410364e1.vercel.app"
+    "https://trade-x-stock-platfrom-ay8v.vercel.app/"
   ],
   credentials: true
 }));
