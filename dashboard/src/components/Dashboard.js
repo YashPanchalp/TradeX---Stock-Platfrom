@@ -29,13 +29,16 @@ const Dashboard = () => {
               <Route path="/apps" element={<Apps />} />
             </Routes>
           ) : (
-            <div className="guest-view">
+            <div className="guest-view" style={{
+              textAlign:"center",
+              marginTop:"25%",
+            }}>
               <div className="guest-card">
                 <div className="guest-icon">
                   <i className="fa fa-lock" aria-hidden="true"></i>
                 </div>
-                <h2 className="guest-title">Please Login to View Your Dashboard</h2>
-                <p className="guest-desc">Only the live market WatchList is visible to guests.</p>
+                <h2 className="guest-title text-center">Please Login to View Your Dashboard</h2>
+                <p className="guest-desc" style={{marginBottom:"2rem"}}>Only the live market WatchList is visible to guests.</p>
                 <Link to="/login" className="btn btn-guest">Login Now</Link>
               </div>
             </div>

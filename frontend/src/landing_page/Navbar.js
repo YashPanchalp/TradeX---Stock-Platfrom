@@ -41,6 +41,11 @@ function Navbar() {
           <form className="d-flex ms-auto align-items-center gap-3 flex-column flex-lg-row" role="search">
             <ul className="navbar-nav mb-lg-0 align-items-lg-center">
               <li className="nav-item">
+                <Link className="nav-link active" aria-current="page" to="http://localhost:3000/">
+                  Dashboard
+                </Link>
+              </li>
+              <li className="nav-item">
                 <Link className="nav-link active" aria-current="page" to="/signup">
                   Signup
                 </Link>
