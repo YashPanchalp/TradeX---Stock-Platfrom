@@ -1,11 +1,11 @@
 //-------------------------------------------//
 require("dotenv").config();
 const express = require("express");
-const { HoldingsModel } = require("./model/HoldingsModel");
-const { PositionsModel } = require("./model/PositionsModel");
-const { OrdersModel } = require("./model/OrdersModel");
-const { FundsModel } = require("./model/FundsModel");
-const { UserModel } = require("./model/UserModel");
+const { HoldingsModel } = require("../model/HoldingsModel");
+const { PositionsModel } = require("../model/PositionsModel");
+const { OrdersModel } = require("../model/OrdersModel");
+const { FundsModel } = require("../model/FundsModel");
+const { UserModel } = require("../model/UserModel");
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcryptjs");
 const app = express();
@@ -18,6 +18,7 @@ const url = process.env.MONGO_URL;
 
 app.use(cors());
 app.use(bodyParser.json());
+
 
 // Middleware to authenticate JWT token
 const authenticateToken = (req, res, next) => {
@@ -424,7 +425,33 @@ app.get("/", (req, res) => {
   res.send("Home route");
 });
 
-app.listen(PORT, () => {
-  console.log("App running on port 3002");
-  mongoose.connect(url);
+//Local host listen to port 3002 and exports app for vercel (production)
+mongoose
+  .connect(process.env.MONGO_URL)
+  .then(() => {
+    console.log("MongoDB Connected");
+
+    // Only start server locally
+    if (process.env.NODE_ENV !== "production") {
+      const PORT = process.env.PORT || 3002;
+
+      app.listen(PORT, () => {
+        console.log(`Server running on port ${PORT}`);
+      });
+    }
+  })
+  .catch((err) => {
+    console.error("MongoDB Connection Error:", err);
+  });
+
+// Export for Vercel
+module.exports = app;
+app.get("/", (req, res) => {
+  res.json({
+    success: true,
+    message: "TradeX Backend Running",
+  });
 });
+
+// Export app for Vercel
+module.exports = app;
