@@ -18,11 +18,15 @@ const url = process.env.MONGO_URL;
 
 app.use(
   cors({
-    origin: true,
+    origin: [
+      "https://trade-x-stock-platfrom-ay8v.vercel.app",
+      "http://localhost:3000"
+    ],
+    methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
     credentials: true,
+    allowedHeaders: ["Content-Type", "Authorization"]
   })
 );
-app.options("*", cors());
 app.use(bodyParser.json());
 
 
@@ -56,7 +60,11 @@ app.post("/signup", async (req, res) => {
     const token = jwt.sign({ id: newUser._id }, process.env.JWT_SECRET || "secret_key", { expiresIn: "1d" });
     res.status(201).json({ message: "User created successfully", token, name: newUser.name });
   } catch (error) {
-    res.status(500).json({ message: "Error signing up", error });
+    console.error("Signup Error:", error);
+    res.status(500).json({
+    message: "Error signing up",
+    error: error.message
+  });
   }
 });
 
@@ -74,7 +82,11 @@ app.post("/login", async (req, res) => {
     const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET || "secret_key", { expiresIn: "1d" });
     res.status(200).json({ message: "Login successful", token, name: user.name });
   } catch (error) {
-    res.status(500).json({ message: "Error logging in", error });
+    console.error("Login Error:", error);
+    res.status(500).json({
+    message: "Error logging in",
+    error: error.message
+  });
   }
 });
 
@@ -262,9 +274,7 @@ app.post('/newOrder', authenticateToken, async (req,res) => {
   res.send("Orders saved");
 });
 
-app.get("/", (req, res) => {
-  res.send("Home route");
-});
+
 
 //Local host listen to port 3002 and exports app for vercel (production)
 mongoose
@@ -286,7 +296,6 @@ mongoose
   });
 
 // Export for Vercel
-module.exports = app;
 app.get("/", (req, res) => {
   res.json({
     success: true,
