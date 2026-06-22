@@ -17,11 +17,14 @@ const url = process.env.MONGO_URL;
 //------------------------------------------//
 
 const app = express();
-app.use(cors());
-
-app.use(express.json());
-
-app.options("*", cors());
+app.use(cors({
+  origin: [
+    "http://localhost:3000",
+    "https://trade-x-stock-platfrom.vercel.app",
+    "https://trade-x-stock-platfr-git-f39ba2-yash-panchals-projects-410364e1.vercel.app"
+  ],
+  credentials: true
+}));
 app.use(bodyParser.json());
 
 
