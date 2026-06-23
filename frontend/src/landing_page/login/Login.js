@@ -3,7 +3,7 @@ import Navbar from '../Navbar';
 import Footer from '../Footer';
 
 function Login() {
-    const dashboardLoginUrl = "http://localhost:3000/login";
+    const dashboardLoginUrl = `${process.env.REACT_APP_DASHBOARD_URL}/login`;
 
     useEffect(() => {
         const targetUrl = new URL(dashboardLoginUrl);

@@ -13,6 +13,8 @@ function Navbar() {
     localStorage.setItem('tradex-theme', themeName);
   }, [isDarkTheme]);
 
+  const dashboardUrl = `${process.env.REACT_APP_DASHBOARD_URL}`
+
   return (
     <nav
       className="navbar navbar-expand-lg border-bottom p-2"
@@ -41,7 +43,7 @@ function Navbar() {
           <form className="d-flex ms-auto align-items-center gap-3 flex-column flex-lg-row" role="search">
             <ul className="navbar-nav mb-lg-0 align-items-lg-center">
               <li className="nav-item">
-                <Link className="nav-link active" aria-current="page" to="http://localhost:3000/">
+                <Link className="nav-link active" aria-current="page" to={dashboardUrl}>
                   Dashboard
                 </Link>
               </li>

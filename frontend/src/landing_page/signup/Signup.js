@@ -3,7 +3,7 @@ import Navbar from '../Navbar';
 import Footer from '../Footer';
 
 function Signup() {
-    const dashboardSignupUrl = "http://localhost:3000/signup";
+    const dashboardSignupUrl = `${process.env.REACT_APP_DASHBOARD_URL}/signup`;
 
     useEffect(() => {
         const targetUrl = new URL(dashboardSignupUrl);
