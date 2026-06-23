@@ -20,7 +20,7 @@ const app = express();
 app.use(cors({
   origin: [
     "http://localhost:3000",
-    "https://trade-x-stock-platfrom-ay8v.vercel.app/"
+    "https://trade-x-stock-platfrom-ay8v.vercel.app"
   ],
   credentials: true
 }));
