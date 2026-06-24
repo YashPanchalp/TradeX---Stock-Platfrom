@@ -2,6 +2,7 @@ import React from "react";
 import {Link} from "react-router-dom";
 
 function Universe() {
+  const dashBoardSignUpUrl = `${process.env.REACT_APP_DASHBOARD_URL}/signup`;
   return (
     <div className="container mt-5">
       <div className="row text-center p-5">
@@ -53,7 +54,7 @@ sectors, supply chains, and more.
 </p>
         </div>
 
-        <Link to="http://localhost:3000/signup" className='p-2 mt-5 mb-5 btn btn-primary fs-5 signup-cta'
+        <Link to={dashBoardSignUpUrl} className='p-2 mt-5 mb-5 btn btn-primary fs-5 signup-cta'
           style={{margin: "0 auto",
             color:"white"
           }}>Signup Now</Link>
