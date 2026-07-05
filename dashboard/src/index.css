@@ -1127,22 +1127,25 @@ body[data-theme='dark'] {
     flex-basis: 100%;
     padding: 0.5rem 0.75rem;
     justify-content: flex-start;
-    align-items: center;
+    align-items: flex-start;
     gap: 0.5rem;
-    flex-wrap: nowrap;
+    flex-wrap: wrap;
     flex-direction: row;
-    overflow-x: auto;
-    overflow-y: hidden;
+    overflow: visible;
     -webkit-overflow-scrolling: touch;
     position: relative;
     z-index: 1201;
   }
 
   .menus {
-    width: auto;
-    flex: 0 0 auto;
+    width: 100%;
+    flex: 1 0 100%;
     min-width: 0;
     padding-bottom: 0;
+    overflow-x: auto;
+    overflow-y: hidden;
+    -webkit-overflow-scrolling: touch;
+    order: 1;
   }
 
   .menus ul {
@@ -1156,10 +1159,11 @@ body[data-theme='dark'] {
   }
 
   .profile {
-    margin-left: auto;
+    margin-left: 0;
     width: auto;
     justify-content: flex-start;
     flex: 0 0 auto;
+    order: 2;
   }
 
   .profile > .btn,
@@ -1173,6 +1177,7 @@ body[data-theme='dark'] {
     justify-content: center;
     margin-left: 0;
     flex: 0 0 auto;
+    order: 3;
   }
 
   .profile .username {
@@ -1190,7 +1195,7 @@ body[data-theme='dark'] {
     max-width: none;
     max-height: 70vh;
     overflow-y: auto;
-    z-index: 1300;
+    z-index: 3000;
   }
 
   .profile-dropdown::before {
@@ -1425,6 +1430,7 @@ body[data-theme='dark'] {
     left: 0.5rem;
     right: 0.5rem;
     bottom: 0.5rem;
+    z-index: 3000;
   }
 
   .content {

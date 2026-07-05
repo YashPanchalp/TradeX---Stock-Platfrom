@@ -229,7 +229,21 @@ export default WatchList;
 
 const WatchListItem = ({ stock, onAnalyticsClick }) => {
   const [showWatchlistActions, setShowWatchlistActions] = useState(false);
+  const [isTouchDevice, setIsTouchDevice] = useState(false);
   const { updateCurrentPrice } = useContext(GeneralContext);
+
+  useEffect(() => {
+    const touchMediaQuery = window.matchMedia("(hover: none) and (pointer: coarse)");
+    const syncTouchState = () => setIsTouchDevice(touchMediaQuery.matches);
+
+    syncTouchState();
+
+    touchMediaQuery.addEventListener("change", syncTouchState);
+
+    return () => {
+      touchMediaQuery.removeEventListener("change", syncTouchState);
+    };
+  }, []);
 
   useEffect(() => {
     if (updateCurrentPrice) {
@@ -259,7 +273,7 @@ const WatchListItem = ({ stock, onAnalyticsClick }) => {
           <span className="price">{stock.price}</span>
         </div>
       </div>
-      {showWatchlistActions && <WatchListActions stock={stock} onAnalyticsClick={onAnalyticsClick} />}
+      {(showWatchlistActions || isTouchDevice) && <WatchListActions stock={stock} onAnalyticsClick={onAnalyticsClick} />}
     </li>
   );
 };
@@ -286,18 +300,16 @@ const WatchListActions = ({ stock, onAnalyticsClick }) => {
           placement="top"
           arrow
           TransitionComponent={Grow}
-          onClick={handleBuyClick}
         >
-        <button className="buy">Buy</button>
+        <button className="buy" onClick={handleBuyClick}>Buy</button>
         </Tooltip>
         <Tooltip
           title="Sell (S)"
           placement="top"
           arrow
           TransitionComponent={Grow}
-          onClick={handleSellClick}
         >
-          <button className="sell">Sell</button>
+          <button className="sell" onClick={handleSellClick}>Sell</button>
         </Tooltip>
         <Tooltip
           title="Analytics (A)"
