@@ -338,5 +338,9 @@
   .buy-window-content {
     padding: 16px;
   }
+
+  .buy-window-wrapper {
+    z-index: 900;
+  }
 }
   

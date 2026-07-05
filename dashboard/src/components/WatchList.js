@@ -35,27 +35,30 @@ ChartJS.register(
   Filler
 );
 
+const updateWatchlistStock = (stock) => {
+  const changePercent = (Math.random() * 2 - 1) / 500;
+  const newPrice = stock.price * (1 + changePercent);
+  const diff = newPrice - stock.price;
+
+  return {
+    ...stock,
+    price: Number.parseFloat(newPrice.toFixed(2)),
+    isDown: diff < 0,
+    percent: (Math.abs(changePercent) * 100).toFixed(2) + "%",
+  };
+};
+
+const buildUpdatedWatchlist = (prevWatchlist) => {
+  return prevWatchlist.map((stock) => updateWatchlistStock(stock));
+};
+
 const WatchList = () => {
   const [watchlist, setWatchlist] = useState(initialWatchlist);
   const [activeChartStockUID, setActiveChartStockUID] = useState(null);
 
   useEffect(() => {
     const tick = () => {
-      setWatchlist((prevWatchlist) =>
-        prevWatchlist.map((stock) => {
-          // Random change between -0.20% and +0.20%
-          const changePercent = (Math.random() * 2 - 1) / 500;
-          const newPrice = stock.price * (1 + changePercent);
-          const diff = newPrice - stock.price;
-          
-          return {
-            ...stock,
-            price: parseFloat(newPrice.toFixed(2)),
-            isDown: diff < 0,
-            percent: (Math.abs(changePercent) * 100).toFixed(2) + "%",
-          };
-        })
-      );
+      setWatchlist((prevWatchlist) => buildUpdatedWatchlist(prevWatchlist));
     };
 
     // Call immediately on mount so the UI isn't blank for the first cycle
@@ -168,12 +171,8 @@ const LiveChart = ({ stock, onClose }) => {
   });
 
   useEffect(() => {
-    setPriceHistory(prev => [...prev.slice(1), stock.price]);
-    setLabels(prev => {
-      const newLabels = [...prev.slice(1)];
-      newLabels.push(new Date().toLocaleTimeString());
-      return newLabels;
-    });
+    setPriceHistory((prev) => prev.slice(1).concat(stock.price));
+    setLabels((prev) => prev.slice(1).concat(new Date().toLocaleTimeString()));
   }, [stock.price]);
 
   const data = {
@@ -206,7 +205,7 @@ const LiveChart = ({ stock, onClose }) => {
   };
 
   return (
-    <div style={{ display: 'flex', flexDirection: 'column', height: '100%', padding: '1rem', boxSizing: 'border-box' }}>
+    <div className="live-chart-panel" style={{ display: 'flex', flexDirection: 'column', height: '100%', padding: '1rem', boxSizing: 'border-box' }}>
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '1rem' }}>
         <div>
           <h3 style={{ margin: '0 0 0.5rem 0', color: 'var(--page-text)' }}>{stock.name}</h3>
@@ -215,7 +214,7 @@ const LiveChart = ({ stock, onClose }) => {
         </div>
         <button onClick={onClose} style={{ background: 'var(--page-surface-soft)', border: '1px solid var(--page-border)', borderRadius: '4px', fontSize: '1.2rem', cursor: 'pointer', color: 'var(--page-text)', width: '32px', height: '32px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>×</button>
       </div>
-      <div style={{ flex: 1, position: 'relative', minHeight: '300px' }}>
+      <div className="live-chart-canvas" style={{ flex: 1, position: 'relative', minHeight: '300px' }}>
         <Line data={data} options={options} />
       </div>
     </div>

@@ -4,51 +4,51 @@ import {Link} from "react-router-dom";
 function Universe() {
   const dashBoardSignUpUrl = `${process.env.REACT_APP_DASHBOARD_URL}/signup`;
   return (
-    <div className="container mt-5">
-      <div className="row text-center p-5">
-        <h2>The TradeX Universe</h2>
-        <p>
+    <div className="container mt-5 universe-page">
+      <div className="row text-center p-5 universe-grid">
+        <h2 className="universe-title">The TradeX Universe</h2>
+        <p className="universe-subtitle">
           Extend your trading and investment experience even further with our
           partner platforms
         </p>
 
-        <div className="col-4 p-3 mt-5">
-          <img src="media/images/smallcaseLogo.png"  style={{height:"45px",width:"180px"}}/>
-          <p className="text-muted">
+        <div className="col-12 col-md-6 col-lg-4 p-3 mt-5 universe-card">
+          <img className="universe-logo" src="media/images/smallcaseLogo.png" alt="Smallcase logo" />
+          <p className="text-muted universe-copy">
             Our asset management venture that is creating simple and transparent
             index funds to help you save for your goals.
           </p>
         </div>
 
-        <div className="col-4 p-3 mt-5">
-          <img src="media/images/streakLogo.png"  style={{height:"45px",width:"180px"}}/>
-          <p className="text-muted">Systematic trading platform
+        <div className="col-12 col-md-6 col-lg-4 p-3 mt-5 universe-card">
+          <img className="universe-logo" src="media/images/streakLogo.png" alt="Streak logo" />
+          <p className="text-muted universe-copy">Systematic trading platform
 that allows you to create and backtest
 strategies without coding.</p>
         </div>
-        <div className="col-4 p-3 mt-5">
-          <img src="media/images/dittoLogo.png"  style={{height:"42px",width:"180px"}}/>
-          <p className="text-muted">Personalized advice on life
+        <div className="col-12 col-md-6 col-lg-4 p-3 mt-5 universe-card">
+          <img className="universe-logo" src="media/images/dittoLogo.png" alt="Ditto logo" />
+          <p className="text-muted universe-copy">Personalized advice on life
 and health insurance. No spam
 and no mis-selling.
 Sign up for free</p>
         </div>
-        <div className="col-4 p-3 mt-5">
-          <img src="media/images/sensibullLogo.svg " style={{height:"45px",width:"180px"}}/>
-          <p className="text-muted">Options trading platform that lets you
+        <div className="col-12 col-md-6 col-lg-4 p-3 mt-5 universe-card">
+          <img className="universe-logo" src="media/images/sensibullLogo.svg" alt="Sensibull logo" />
+          <p className="text-muted universe-copy">Options trading platform that lets you
 create strategies, analyze positions, and examine
 data points like open interest, FII/DII, and more.
 </p>
         </div>
-        <div className="col-4 p-3 mt-5">
-          <img src="media/images/logo.svg"  style={{height:"42px",width:"180px"}}/>
-          <p className="text-muted">Our asset management venture
+        <div className="col-12 col-md-6 col-lg-4 p-3 mt-5 universe-card">
+          <img className="universe-logo" src="media/images/logo.svg" alt="TradeX logo" />
+          <p className="text-muted universe-copy">Our asset management venture
 that is creating simple and transparent index
 funds to help you save for your goals.</p>
         </div>
-        <div className="col-4 p-3 mt-5">
-          <img src="media/images/goldenpiLogo.png" style={{height:"45px",width:"180px"}} />
-          <p className="text-muted">Investment research platform
+        <div className="col-12 col-md-6 col-lg-4 p-3 mt-5 universe-card">
+          <img className="universe-logo" src="media/images/goldenpiLogo.png" alt="GoldenPi logo" />
+          <p className="text-muted universe-copy">Investment research platform
 that offers detailed insights on stocks,
 sectors, supply chains, and more.
 </p>
