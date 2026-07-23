@@ -2,6 +2,10 @@
 
 TradeX is a full-stack stock trading and investment platform. It simulates a modern brokerage application, allowing users to create accounts, manage funds, buy and sell stocks, and track their portfolio holdings and positions in real-time.
 
+## 🔗 Live Demos
+- **Landing Page**: [https://trade-x-stock-platfrom-fpu7.vercel.app/](https://trade-x-stock-platfrom-fpu7.vercel.app/)
+- **Dashboard**: [https://trade-x-stock-platfrom-ay8v.vercel.app/](https://trade-x-stock-platfrom-ay8v.vercel.app/)
+
 ## 🚀 Features
 
 - **User Authentication**: Secure signup and login using JWT (JSON Web Tokens) and bcrypt for password hashing.
